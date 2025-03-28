@@ -9,7 +9,7 @@ interface SearchResultsProps {
 
 const SearchResults = ({ topics }: SearchResultsProps) => {
   return (
-    <Droppable droppableId="searchResults" isDropDisabled={true}>
+    <Droppable droppableId="searchResults">
       {(provided) => (
         <div
           ref={provided.innerRef}

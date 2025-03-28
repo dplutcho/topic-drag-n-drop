@@ -87,7 +87,10 @@ const MarketTopicSelector = () => {
       }
     }
     // Moving between core and supportive topics
-    else {
+    else if (
+      (source.droppableId === "coreTopics" && destination.droppableId === "supportiveTopics") ||
+      (source.droppableId === "supportiveTopics" && destination.droppableId === "coreTopics")
+    ) {
       if (source.droppableId === "coreTopics" && destination.droppableId === "supportiveTopics") {
         const newCoreTopics = Array.from(coreTopics);
         const [movedTopic] = newCoreTopics.splice(source.index, 1);
@@ -98,6 +101,21 @@ const MarketTopicSelector = () => {
         const [movedTopic] = newSupportiveTopics.splice(source.index, 1);
         setSupportiveTopics(newSupportiveTopics);
         setCoreTopics([...coreTopics, movedTopic]);
+      }
+    }
+    // Moving from a drop zone back to search results
+    else if (
+      (source.droppableId === "coreTopics" || source.droppableId === "supportiveTopics") && 
+      destination.droppableId === "searchResults"
+    ) {
+      if (source.droppableId === "coreTopics") {
+        const newCoreTopics = Array.from(coreTopics);
+        const [removedTopic] = newCoreTopics.splice(source.index, 1);
+        setCoreTopics(newCoreTopics);
+      } else if (source.droppableId === "supportiveTopics") {
+        const newSupportiveTopics = Array.from(supportiveTopics);
+        const [removedTopic] = newSupportiveTopics.splice(source.index, 1);
+        setSupportiveTopics(newSupportiveTopics);
       }
     }
   };

@@ -191,6 +191,7 @@ const MarketTopicSelector = () => {
               title="Core Topics" 
               topics={coreTopics} 
               className="bg-blue-50 border border-blue-100"
+              tooltipText="Topics that are the core of the solution, tool, offering you are selling e.g. 'FinTech Platform'. The Core Topics define the market/audience and determine the Intent used to identify that audience."
               onChildSelectionChange={(topicId, childId, selected) => 
                 handleChildSelectionChange(topicId, childId, selected, true)
               }

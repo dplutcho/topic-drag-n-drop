@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import SearchBar from "./SearchBar";
@@ -217,7 +218,7 @@ const MarketTopicSelector = () => {
           onClick={generateOutput}
           className="bg-indigo-600 hover:bg-indigo-700"
         >
-          Generate Market Selection
+          Generate Audience Analytics
         </Button>
       </div>
     </div>

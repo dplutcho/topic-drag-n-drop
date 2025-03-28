@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import SearchBar from "./SearchBar";
@@ -15,7 +14,6 @@ const MarketTopicSelector = () => {
   const [supportiveTopics, setSupportiveTopics] = useState<Topic[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
 
-  // Handle search
   const handleSearch = (query: string) => {
     setSearchQuery(query);
     
@@ -39,25 +37,20 @@ const MarketTopicSelector = () => {
     setFilteredTopics(filtered);
   };
 
-  // Update filtered topics whenever core or supportive topics change
   useEffect(() => {
     handleSearch(searchQuery);
   }, [coreTopics, supportiveTopics]);
 
-  // Handle drag end
   const handleDragEnd = (result: DropResult) => {
     const { source, destination } = result;
     
-    // Dropped outside a valid drop zone
     if (!destination) return;
     
-    // Same position
     if (
       source.droppableId === destination.droppableId &&
       source.index === destination.index
     ) return;
 
-    // Move within the same droppable
     if (source.droppableId === destination.droppableId) {
       if (source.droppableId === "coreTopics") {
         const newCoreTopics = Array.from(coreTopics);
@@ -73,11 +66,9 @@ const MarketTopicSelector = () => {
       return;
     }
     
-    // Moving from search results to a drop zone
     if (source.droppableId === "searchResults") {
       const topicToMove = filteredTopics[source.index];
       
-      // Clone topic to avoid reference issues
       const topicClone = JSON.parse(JSON.stringify(topicToMove));
       
       if (destination.droppableId === "coreTopics") {
@@ -86,7 +77,6 @@ const MarketTopicSelector = () => {
         setSupportiveTopics([...supportiveTopics, topicClone]);
       }
     }
-    // Moving between core and supportive topics
     else if (
       (source.droppableId === "coreTopics" && destination.droppableId === "supportiveTopics") ||
       (source.droppableId === "supportiveTopics" && destination.droppableId === "coreTopics")
@@ -103,7 +93,6 @@ const MarketTopicSelector = () => {
         setCoreTopics([...coreTopics, movedTopic]);
       }
     }
-    // Moving from a drop zone back to search results
     else if (
       (source.droppableId === "coreTopics" || source.droppableId === "supportiveTopics") && 
       destination.droppableId === "searchResults"
@@ -120,7 +109,6 @@ const MarketTopicSelector = () => {
     }
   };
 
-  // Handle child selection change
   const handleChildSelectionChange = (
     topicId: string, 
     childId: string, 
@@ -156,7 +144,6 @@ const MarketTopicSelector = () => {
     }
   };
 
-  // Generate JSON output
   const generateOutput = () => {
     const output = {
       coreTopics: coreTopics.map(topic => ({
@@ -215,6 +202,7 @@ const MarketTopicSelector = () => {
               title="Supportive Topics" 
               topics={supportiveTopics} 
               className="bg-green-50 border border-green-100"
+              tooltipText="Topics that will always be within the context of the core topic. e.g AI as a supportive topic will only include intent that is about Fintech AI."
               onChildSelectionChange={(topicId, childId, selected) => 
                 handleChildSelectionChange(topicId, childId, selected, false)
               }

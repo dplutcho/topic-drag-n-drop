@@ -6,7 +6,7 @@ import SearchResults from "./SearchResults";
 import DropZone from "./DropZone";
 import { Topic, topicsData, TopicChild } from "@/data/topicsData";
 import { Button } from "@/components/ui/button";
-import { toast } from "@/components/ui/sonner";
+import { toast } from "sonner";
 
 const MarketTopicSelector = () => {
   const [allTopics, setAllTopics] = useState<Topic[]>(topicsData);

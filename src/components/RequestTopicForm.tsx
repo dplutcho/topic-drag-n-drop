@@ -71,74 +71,72 @@ const RequestTopicForm = () => {
       
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <div className="space-y-3">
-              <FormField
-                control={form.control}
-                name="topicName"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs">Topic Name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Enter topic name" {...field} className="h-8 text-sm" />
-                    </FormControl>
-                    <FormMessage className="text-xs" />
-                  </FormItem>
-                )}
-              />
-              
-              <FormField
-                control={form.control}
-                name="categories"
-                render={() => (
-                  <FormItem>
-                    <div className="mb-1">
-                      <FormLabel className="text-xs">Category (optional)</FormLabel>
-                      <FormDescription className="text-xs text-gray-500">
-                        Select the type of topic requested.
-                      </FormDescription>
-                    </div>
-                    <div className="flex flex-wrap gap-3">
-                      {categoryOptions.map((category) => (
-                        <FormField
-                          key={category.id}
-                          control={form.control}
-                          name="categories"
-                          render={({ field }) => {
-                            return (
-                              <FormItem
-                                key={category.id}
-                                className="flex flex-row items-center space-x-1.5 space-y-0"
-                              >
-                                <FormControl>
-                                  <Checkbox
-                                    checked={field.value?.includes(category.id)}
-                                    onCheckedChange={(checked) => {
-                                      const currentValues = field.value || [];
-                                      return checked
-                                        ? field.onChange([...currentValues, category.id])
-                                        : field.onChange(
-                                            currentValues.filter(
-                                              (value) => value !== category.id
-                                            )
-                                          );
-                                    }}
-                                    className="h-3.5 w-3.5"
-                                  />
-                                </FormControl>
-                                <FormLabel className="text-xs font-normal cursor-pointer">
-                                  {category.label}
-                                </FormLabel>
-                              </FormItem>
-                            );
-                          }}
-                        />
-                      ))}
-                    </div>
-                  </FormItem>
-                )}
-              />
-            </div>
+          <div className="grid grid-cols-1 gap-3">
+            <FormField
+              control={form.control}
+              name="topicName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-xs">Topic Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Enter topic name" {...field} className="h-8 text-sm" />
+                  </FormControl>
+                  <FormMessage className="text-xs" />
+                </FormItem>
+              )}
+            />
+            
+            <FormField
+              control={form.control}
+              name="categories"
+              render={() => (
+                <FormItem>
+                  <div className="mb-1">
+                    <FormLabel className="text-xs">Category (optional)</FormLabel>
+                    <FormDescription className="text-xs text-gray-500">
+                      Select the type of topic requested.
+                    </FormDescription>
+                  </div>
+                  <div className="flex flex-wrap gap-3">
+                    {categoryOptions.map((category) => (
+                      <FormField
+                        key={category.id}
+                        control={form.control}
+                        name="categories"
+                        render={({ field }) => {
+                          return (
+                            <FormItem
+                              key={category.id}
+                              className="flex flex-row items-center space-x-1.5 space-y-0"
+                            >
+                              <FormControl>
+                                <Checkbox
+                                  checked={field.value?.includes(category.id)}
+                                  onCheckedChange={(checked) => {
+                                    const currentValues = field.value || [];
+                                    return checked
+                                      ? field.onChange([...currentValues, category.id])
+                                      : field.onChange(
+                                          currentValues.filter(
+                                            (value) => value !== category.id
+                                          )
+                                        );
+                                  }}
+                                  className="h-3.5 w-3.5"
+                                />
+                              </FormControl>
+                              <FormLabel className="text-xs font-normal cursor-pointer">
+                                {category.label}
+                              </FormLabel>
+                            </FormItem>
+                          );
+                        }}
+                      />
+                    ))}
+                  </div>
+                </FormItem>
+              )}
+            />
             
             <FormField
               control={form.control}
@@ -149,7 +147,7 @@ const RequestTopicForm = () => {
                   <FormControl>
                     <Textarea 
                       placeholder="Please explain the topic and why it should be added" 
-                      className="resize-none h-8 text-sm py-1.5"
+                      className="resize-none min-h-24 text-sm py-1.5"
                       {...field} 
                     />
                   </FormControl>

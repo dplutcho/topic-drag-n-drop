@@ -68,7 +68,8 @@ const DropZone = ({
                     >
                       <TopicItem 
                         topic={topic} 
-                        inDropZone={true} 
+                        inDropZone={true}
+                        id={id}
                         onChildSelectionChange={onChildSelectionChange}
                       />
                     </div>

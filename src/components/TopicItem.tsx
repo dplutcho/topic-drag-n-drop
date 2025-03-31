@@ -20,32 +20,11 @@ const TopicItem = ({
 }: TopicItemProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
   
-  // Generate a random but consistent market share percentage for each topic
-  const getMarketShare = () => {
-    // Create a hash-like value from the topic id to ensure consistency for each topic
-    let hash = 0;
-    for (let i = 0; i < topic.id.length; i++) {
-      hash = ((hash << 5) - hash) + topic.id.charCodeAt(i);
-      hash = hash & hash; // Convert to 32bit integer
-    }
-    
-    // Use the hash to generate a value between 0 and 1
-    const normalizedValue = (Math.abs(hash) % 1000) / 1000;
-    
-    // Apply a bell curve approximation
-    // This uses the Box-Muller transform to create a normal-ish distribution
-    const u1 = normalizedValue;
-    const u2 = ((hash >> 8) & 0xFF) / 255;
-    
-    // Calculate using a simplified normal distribution approximation
-    const z = Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2);
-    
-    // Scale to range 5-95%
-    const scaled = 50 + z * 20;
-    return Math.max(5, Math.min(95, Math.round(scaled)));
-  };
-  
-  const marketShare = getMarketShare();
+  // Generate a completely random market share percentage
+  const [marketShare] = useState(() => {
+    // Generate a random number between 5 and 95
+    return Math.floor(Math.random() * 91) + 5;
+  });
 
   const handleToggleExpand = () => {
     if (inDropZone) {

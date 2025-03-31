@@ -31,10 +31,10 @@ const formSchema = z.object({
 });
 
 const categoryOptions = [
-  { id: "industry", label: "Industry" },
-  { id: "role", label: "Role" },
-  { id: "solution", label: "Solution" },
-  { id: "technology", label: "Technology" },
+  { id: "Technology", label: "Topic" },
+  { id: "Product", label: "Product" },
+  { id: "General Topic", label: "Solution" },
+
 ];
 
 const RequestTopicForm = () => {
@@ -115,7 +115,7 @@ const RequestTopicForm = () => {
                   <div className="mb-2">
                     <FormLabel>Category (optional)</FormLabel>
                     <FormDescription className="text-xs">
-                      Select the category that best fits this topic
+                      Select the type of topoic requested.
                     </FormDescription>
                   </div>
                   <div className="flex flex-wrap gap-4">

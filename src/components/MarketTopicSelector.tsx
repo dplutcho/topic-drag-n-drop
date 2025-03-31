@@ -41,12 +41,6 @@ const MarketTopicSelector = () => {
                 handleChildSelectionChange(topicId, childId, selected, true)
               }
             />
-            <div className="mt-4">
-              <h2 className="text-xl font-semibold text-gray-800">Market Analytics</h2>
-              <div className="mt-2 p-3 bg-gray-50 border border-gray-200 rounded-md">
-                <p className="text-sm text-gray-600">Analytics based on your core topic selections will appear here.</p>
-              </div>
-            </div>
           </div>
           
           <div className="lg:col-span-1">

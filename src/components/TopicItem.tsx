@@ -20,12 +20,18 @@ const TopicItem = ({
 }: TopicItemProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
   
-  // Generate a consistent market share percentage based on topic id
+  // Generate a random but consistent market share percentage for each topic
   const getMarketShare = () => {
-    // Use the last character of the id (converted to number if possible) to generate a percentage
-    const lastChar = topic.id.slice(-1);
-    const basePercentage = isNaN(parseInt(lastChar)) ? 25 : parseInt(lastChar) * 10;
-    return Math.max(10, Math.min(95, basePercentage)); // Ensure between 10% and 95%
+    // Create a hash-like value from the topic id to ensure consistency for each topic
+    let hash = 0;
+    for (let i = 0; i < topic.id.length; i++) {
+      hash = ((hash << 5) - hash) + topic.id.charCodeAt(i);
+      hash = hash & hash; // Convert to 32bit integer
+    }
+    
+    // Use the hash to generate a percentage between 15% and 92%
+    const randomBase = Math.abs(hash % 78) + 15;
+    return randomBase;
   };
   
   const marketShare = getMarketShare();

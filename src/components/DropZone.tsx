@@ -53,58 +53,59 @@ const DropZone = ({
           </div>
           
           {topics.length === 0 ? (
-            <>
-              <div className="border-2 border-dashed border-slate-300 rounded-lg h-32 flex items-center justify-center text-slate-500">
-                Drop topics here
-              </div>
-              {id === "coreTopics" && (
-                <div className="mt-4">
-                  <h2 className="text-xl font-semibold text-gray-800">Market Analytics</h2>
-                  <div className="mt-2 p-3 bg-gray-50 border border-gray-200 rounded-md">
-                    <div className="grid grid-cols-3 gap-3">
-                      <div className="text-center">
-                        <div className="text-2xl font-bold text-indigo-600">{topics.length > 0 ? topics.length * 320 : 0}</div>
-                        <div className="text-xs text-gray-500">Intent Activity</div>
-                      </div>
-                      <div className="text-center">
-                        <div className="text-2xl font-bold text-indigo-600">{topics.length > 0 ? topics.length * 1280 : 0}</div>
-                        <div className="text-xs text-gray-500">Prospects</div>
-                      </div>
-                      <div className="text-center">
-                        <div className="text-2xl font-bold text-indigo-600">{topics.length > 0 ? topics.length * 84 : 0}</div>
-                        <div className="text-xs text-gray-500">Companies</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="mt-3 text-center">
-                    {onChildSelectionChange && (
-                      <TopicOutputGenerator 
-                        coreTopics={topics} 
-                        supportiveTopics={[]} 
+            <div className="border-2 border-dashed border-slate-300 rounded-lg h-32 flex items-center justify-center text-slate-500">
+              Drop topics here
+            </div>
+          ) : (
+            <div className="mb-4">
+              {topics.map((topic, index) => (
+                <Draggable key={topic.id} draggableId={topic.id} index={index}>
+                  {(provided) => (
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                    >
+                      <TopicItem 
+                        topic={topic} 
+                        inDropZone={true} 
+                        onChildSelectionChange={onChildSelectionChange}
                       />
-                    )}
+                    </div>
+                  )}
+                </Draggable>
+              ))}
+            </div>
+          )}
+          
+          {id === "coreTopics" && (
+            <div className="mt-4">
+              <h2 className="text-xl font-semibold text-gray-800">Market Analytics</h2>
+              <div className="mt-2 p-3 bg-gray-50 border border-gray-200 rounded-md">
+                <div className="grid grid-cols-3 gap-3">
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-indigo-600">{topics.length > 0 ? topics.length * 320 : 0}</div>
+                    <div className="text-xs text-gray-500">Intent Activity</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-indigo-600">{topics.length > 0 ? topics.length * 1280 : 0}</div>
+                    <div className="text-xs text-gray-500">Prospects</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-indigo-600">{topics.length > 0 ? topics.length * 84 : 0}</div>
+                    <div className="text-xs text-gray-500">Companies</div>
                   </div>
                 </div>
-              )}
-            </>
-          ) : (
-            topics.map((topic, index) => (
-              <Draggable key={topic.id} draggableId={topic.id} index={index}>
-                {(provided) => (
-                  <div
-                    ref={provided.innerRef}
-                    {...provided.draggableProps}
-                    {...provided.dragHandleProps}
-                  >
-                    <TopicItem 
-                      topic={topic} 
-                      inDropZone={true} 
-                      onChildSelectionChange={onChildSelectionChange}
-                    />
-                  </div>
+              </div>
+              <div className="mt-3 text-center">
+                {onChildSelectionChange && (
+                  <TopicOutputGenerator 
+                    coreTopics={topics} 
+                    supportiveTopics={[]} 
+                  />
                 )}
-              </Draggable>
-            ))
+              </div>
+            </div>
           )}
           {provided.placeholder}
         </div>

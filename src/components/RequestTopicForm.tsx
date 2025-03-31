@@ -14,9 +14,11 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+  FormDescription,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const formSchema = z.object({
   topicName: z.string().min(2, {
@@ -25,7 +27,15 @@ const formSchema = z.object({
   notes: z.string().min(10, {
     message: "Please explain why this topic should be added (min 10 characters).",
   }),
+  categories: z.array(z.string()).optional(),
 });
+
+const categoryOptions = [
+  { id: "industry", label: "Industry" },
+  { id: "role", label: "Role" },
+  { id: "solution", label: "Solution" },
+  { id: "technology", label: "Technology" },
+];
 
 const RequestTopicForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -35,6 +45,7 @@ const RequestTopicForm = () => {
     defaultValues: {
       topicName: "",
       notes: "",
+      categories: [],
     },
   });
 
@@ -90,6 +101,59 @@ const RequestTopicForm = () => {
                     />
                   </FormControl>
                   <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          
+          <div>
+            <FormField
+              control={form.control}
+              name="categories"
+              render={() => (
+                <FormItem>
+                  <div className="mb-2">
+                    <FormLabel>Category (optional)</FormLabel>
+                    <FormDescription className="text-xs">
+                      Select the category that best fits this topic
+                    </FormDescription>
+                  </div>
+                  <div className="flex flex-wrap gap-4">
+                    {categoryOptions.map((category) => (
+                      <FormField
+                        key={category.id}
+                        control={form.control}
+                        name="categories"
+                        render={({ field }) => {
+                          return (
+                            <FormItem
+                              key={category.id}
+                              className="flex flex-row items-center space-x-2 space-y-0"
+                            >
+                              <FormControl>
+                                <Checkbox
+                                  checked={field.value?.includes(category.id)}
+                                  onCheckedChange={(checked) => {
+                                    const currentValues = field.value || [];
+                                    return checked
+                                      ? field.onChange([...currentValues, category.id])
+                                      : field.onChange(
+                                          currentValues.filter(
+                                            (value) => value !== category.id
+                                          )
+                                        );
+                                  }}
+                                />
+                              </FormControl>
+                              <FormLabel className="text-sm font-normal cursor-pointer">
+                                {category.label}
+                              </FormLabel>
+                            </FormItem>
+                          );
+                        }}
+                      />
+                    ))}
+                  </div>
                 </FormItem>
               )}
             />

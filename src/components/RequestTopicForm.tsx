@@ -34,7 +34,6 @@ const categoryOptions = [
   { id: "Technology", label: "Topic" },
   { id: "Product", label: "Product" },
   { id: "General Topic", label: "Solution" },
-
 ];
 
 const RequestTopicForm = () => {
@@ -64,25 +63,25 @@ const RequestTopicForm = () => {
   }
 
   return (
-    <div className="mt-8 bg-white p-4 rounded-lg shadow-sm">
-      <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-        <MessageSquare className="h-5 w-5" />
+    <div className="mt-4 bg-white p-3 rounded-lg shadow-sm">
+      <h2 className="text-lg font-semibold mb-2 flex items-center gap-1">
+        <MessageSquare className="h-4 w-4" />
         Request Missing Topic
       </h2>
       
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <FormField
               control={form.control}
               name="topicName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Topic Name</FormLabel>
+                  <FormLabel className="text-xs">Topic Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter topic name" {...field} />
+                    <Input placeholder="Enter topic name" {...field} className="h-8 text-sm" />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="text-xs" />
                 </FormItem>
               )}
             />
@@ -92,15 +91,15 @@ const RequestTopicForm = () => {
               name="notes"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Why is this topic needed?</FormLabel>
+                  <FormLabel className="text-xs">Why is this topic needed?</FormLabel>
                   <FormControl>
                     <Textarea 
                       placeholder="Please explain the topic and why it should be added" 
-                      className="resize-none h-10"
+                      className="resize-none h-8 text-sm py-1.5"
                       {...field} 
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="text-xs" />
                 </FormItem>
               )}
             />
@@ -112,13 +111,13 @@ const RequestTopicForm = () => {
               name="categories"
               render={() => (
                 <FormItem>
-                  <div className="mb-2">
-                    <FormLabel>Category (optional)</FormLabel>
-                    <FormDescription className="text-xs">
-                      Select the type of topoic requested.
+                  <div className="mb-1">
+                    <FormLabel className="text-xs">Category (optional)</FormLabel>
+                    <FormDescription className="text-xs text-gray-500">
+                      Select the type of topic requested.
                     </FormDescription>
                   </div>
-                  <div className="flex flex-wrap gap-4">
+                  <div className="flex flex-wrap gap-3">
                     {categoryOptions.map((category) => (
                       <FormField
                         key={category.id}
@@ -128,7 +127,7 @@ const RequestTopicForm = () => {
                           return (
                             <FormItem
                               key={category.id}
-                              className="flex flex-row items-center space-x-2 space-y-0"
+                              className="flex flex-row items-center space-x-1.5 space-y-0"
                             >
                               <FormControl>
                                 <Checkbox
@@ -143,9 +142,10 @@ const RequestTopicForm = () => {
                                           )
                                         );
                                   }}
+                                  className="h-3.5 w-3.5"
                                 />
                               </FormControl>
-                              <FormLabel className="text-sm font-normal cursor-pointer">
+                              <FormLabel className="text-xs font-normal cursor-pointer">
                                 {category.label}
                               </FormLabel>
                             </FormItem>
@@ -164,7 +164,7 @@ const RequestTopicForm = () => {
               type="submit" 
               size="sm" 
               disabled={isSubmitting}
-              className="bg-indigo-600 hover:bg-indigo-700"
+              className="text-xs h-7 px-3 py-1 bg-indigo-600 hover:bg-indigo-700"
             >
               {isSubmitting ? "Submitting..." : "Submit Request"}
             </Button>

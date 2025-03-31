@@ -9,7 +9,6 @@ interface TopicItemProps {
   topic: Topic;
   isDraggable?: boolean;
   inDropZone: boolean;
-  id?: string; // Add id prop to identify which dropzone the topic is in
   onChildSelectionChange?: (topicId: string, childId: string, selected: boolean) => void;
 }
 
@@ -70,20 +69,17 @@ const TopicItem = ({
           )}
         </div>
         
-        {/* Only display market share for core topics or search results */}
-        {(!inDropZone || id === "coreTopics") && (
+        <div className="flex items-center">
           <div className="flex items-center">
-            <div className="flex items-center">
-              <div className="h-2 w-20 bg-slate-200 rounded-full overflow-hidden">
-                <div 
-                  className="h-full bg-indigo-500" 
-                  style={{ width: `${marketShare}%` }}
-                ></div>
-              </div>
-              <span className="text-xs ml-1.5 text-slate-700">{marketShare}%</span>
+            <div className="h-2 w-20 bg-slate-200 rounded-full overflow-hidden">
+              <div 
+                className="h-full bg-indigo-500" 
+                style={{ width: `${marketShare}%` }}
+              ></div>
             </div>
+            <span className="text-xs ml-1.5 text-slate-700">{marketShare}%</span>
           </div>
-        )}
+        </div>
       </div>
 
       {inDropZone && isExpanded && (

@@ -29,9 +29,20 @@ const TopicItem = ({
       hash = hash & hash; // Convert to 32bit integer
     }
     
-    // Use the hash to generate a percentage between 15% and 92%
-    const randomBase = Math.abs(hash % 78) + 15;
-    return randomBase;
+    // Use the hash to generate a value between 0 and 1
+    const normalizedValue = (Math.abs(hash) % 1000) / 1000;
+    
+    // Apply a bell curve approximation
+    // This uses the Box-Muller transform to create a normal-ish distribution
+    const u1 = normalizedValue;
+    const u2 = ((hash >> 8) & 0xFF) / 255;
+    
+    // Calculate using a simplified normal distribution approximation
+    const z = Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2);
+    
+    // Scale to range 5-95%
+    const scaled = 50 + z * 20;
+    return Math.max(5, Math.min(95, Math.round(scaled)));
   };
   
   const marketShare = getMarketShare();

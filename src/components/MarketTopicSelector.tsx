@@ -191,7 +191,7 @@ const MarketTopicSelector = () => {
               title="Core Topics" 
               topics={coreTopics} 
               className="bg-blue-50 border border-blue-100"
-              tooltipText="Topics that are the core of the solution, tool, offering you are selling e.g. 'FinTech Platform'. The Core Topics define the market/audience and determine the Intent used to identify that audience."
+              tooltipText="Topics that are the core of your solution, tool, offering e.g. 'FinTech Platform' or 'Bitcoin'. The Core Topics define the market/audience and determine the Intent used to identify that audience."
               onChildSelectionChange={(topicId, childId, selected) => 
                 handleChildSelectionChange(topicId, childId, selected, true)
               }
@@ -204,7 +204,7 @@ const MarketTopicSelector = () => {
               title="Supportive Topics" 
               topics={supportiveTopics} 
               className="bg-green-50 border border-green-100"
-              tooltipText="Topics that will always be within the context of the core topic. e.g AI as a supportive topic will only include intent that is about Fintech AI."
+              tooltipText="Topics that the prospect is also interested in but does NOT define your core solution or your core audience. These topics are always within the context of the core topics. e.g AI as a supportive topic will only include intent that is about Fintech AI."
               onChildSelectionChange={(topicId, childId, selected) => 
                 handleChildSelectionChange(topicId, childId, selected, false)
               }

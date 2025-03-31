@@ -57,11 +57,6 @@ const MarketTopicSelector = () => {
           </div>
         </div>
       </DragDropContext>
-      
-      <TopicOutputGenerator 
-        coreTopics={coreTopics} 
-        supportiveTopics={supportiveTopics} 
-      />
     </div>
   );
 };

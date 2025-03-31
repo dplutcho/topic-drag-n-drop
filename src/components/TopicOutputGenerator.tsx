@@ -38,7 +38,7 @@ const TopicOutputGenerator = ({ coreTopics, supportiveTopics }: TopicOutputGener
   return (
     <div className="mt-8 text-center">
       <Button 
-        size="lg" 
+        size="sm" 
         onClick={generateOutput}
         className="bg-indigo-600 hover:bg-indigo-700"
       >

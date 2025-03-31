@@ -5,6 +5,7 @@ import { Topic } from "@/data/topicsData";
 import { cn } from "@/lib/utils";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { InfoIcon } from "lucide-react";
+import TopicOutputGenerator from "./TopicOutputGenerator";
 
 interface DropZoneProps {
   id: string;
@@ -61,6 +62,14 @@ const DropZone = ({
                   <h2 className="text-xl font-semibold text-gray-800">Market Analytics</h2>
                   <div className="mt-2 p-3 bg-gray-50 border border-gray-200 rounded-md">
                     <p className="text-sm text-gray-600">Analytics based on your core topic selections will appear here.</p>
+                  </div>
+                  <div className="mt-3 text-center">
+                    {onChildSelectionChange && (
+                      <TopicOutputGenerator 
+                        coreTopics={topics} 
+                        supportiveTopics={[]} 
+                      />
+                    )}
                   </div>
                 </div>
               )}

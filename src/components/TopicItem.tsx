@@ -73,7 +73,7 @@ const TopicItem = ({
           )}
         </div>
         
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center">
           <div className="flex items-center">
             <div className="h-2 w-20 bg-slate-200 rounded-full overflow-hidden">
               <div 
@@ -82,9 +82,6 @@ const TopicItem = ({
               ></div>
             </div>
             <span className="text-xs ml-1.5 text-slate-700">{marketShare}%</span>
-          </div>
-          <div className="text-xs text-slate-500">
-            {topic.children.length} subtopics
           </div>
         </div>
       </div>

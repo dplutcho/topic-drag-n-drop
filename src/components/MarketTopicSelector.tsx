@@ -204,8 +204,7 @@ const MarketTopicSelector = () => {
               title="Supportive Topics" 
               topics={supportiveTopics} 
               className="bg-green-50 border border-green-100"
-              tooltipText="Topics that the prospects are also interested in but does NOT define your core solution or \
-your core audience. These topics are always within the context of the core topics.e.g The prospect is reading about AI in FinTech."
+              tooltipText="Topics that the prospects are also interested in but does NOT define your core solution or your core audience. These topics are always within the context of the core topics.e.g The prospect is reading about AI in FinTech."
               onChildSelectionChange={(topicId, childId, selected) => 
                 handleChildSelectionChange(topicId, childId, selected, false)
               }

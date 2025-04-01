@@ -117,17 +117,7 @@ export const useMarketTopics = () => {
     if (source.droppableId === "searchResults") {
       const topicToMove = filteredTopics[source.index];
       
-      // Create a clean clone that preserves only the necessary properties
-      const topicClone = {
-        ...topicToMove,
-        id: topicToMove.id,
-        name: topicToMove.name,
-        children: topicToMove.children.map(child => ({
-          ...child,
-          id: child.id,
-          name: child.name
-        }))
-      };
+      const topicClone = JSON.parse(JSON.stringify(topicToMove));
       
       if (destination.droppableId === "coreTopics") {
         setCoreTopics([...coreTopics, topicClone]);

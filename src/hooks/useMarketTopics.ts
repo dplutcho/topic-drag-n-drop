@@ -95,30 +95,34 @@ export const useMarketTopics = () => {
           !supportiveTopics.some(st => st.id === topic.id)
       )
       .map(topic => {
-        // Calculate similarity score (simple implementation)
-        let similarity = 0;
+        // Calculate base similarity score
+        let baseSimilarity = 0;
         
-        // Exact name match gets high score
+        // Exact name match gets highest score
         if (topic.name.toLowerCase() === lowercaseQuery) {
-          similarity = 1.0;
+          baseSimilarity = 1.0;
         }
         // Partial name match gets proportional score
         else if (topic.name.toLowerCase().includes(lowercaseQuery)) {
-          similarity = 0.7 + (lowercaseQuery.length / topic.name.length) * 0.3;
+          baseSimilarity = 0.7 + (lowercaseQuery.length / topic.name.length) * 0.3;
         }
         // Child match gets lower score
         else if (topic.children.some(child => child.name.toLowerCase().includes(lowercaseQuery))) {
           const matchingChild = topic.children.find(child => 
             child.name.toLowerCase().includes(lowercaseQuery)
           );
-          similarity = matchingChild 
+          baseSimilarity = matchingChild 
             ? 0.5 + (lowercaseQuery.length / matchingChild.name.length) * 0.2 
             : 0.5;
         }
         
+        // Apply power law transformation (y = x^α where α > 1 creates power law curve)
+        // Using α = 1.5 for a moderate power law effect
+        const powerLawSimilarity = Math.pow(baseSimilarity, 1.5);
+        
         return {
           ...topic,
-          similarity
+          similarity: parseFloat(powerLawSimilarity.toFixed(2)) // Round to 2 decimal places
         };
       })
       .sort((a, b) => (b.similarity || 0) - (a.similarity || 0)); // Sort by similarity score (descending)

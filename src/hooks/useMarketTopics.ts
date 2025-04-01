@@ -66,20 +66,30 @@ export const useMarketTopics = () => {
     setSearchQuery(query);
     
     if (!query.trim()) {
-      // When no query, show all available topics without similarity score
+      // When no query, show all available topics with descending similarity scores
       const available = allTopics.filter(
         topic => !coreTopics.some(ct => ct.id === topic.id) && 
                 !supportiveTopics.some(st => st.id === topic.id)
       );
-      available.forEach(topic => topic.similarity = 1.0); // Set default similarity for all
       
-      // Keep Blockchain and Fintech at the top
+      // Keep Blockchain and Fintech at the top with highest similarity scores
       const blockchainAndFintech = available.filter(topic => 
         topic.name === "Blockchain" || topic.name === "Fintech"
       );
+      blockchainAndFintech.forEach(topic => topic.similarity = 1.0);
+      
       const others = available.filter(topic => 
         topic.name !== "Blockchain" && topic.name !== "Fintech"
       );
+      
+      // Assign descending similarity scores from 0.9 to 0.2 for other topics
+      const startValue = 0.9;
+      const endValue = 0.2;
+      const step = others.length > 1 ? (startValue - endValue) / (others.length - 1) : 0;
+      
+      others.forEach((topic, index) => {
+        topic.similarity = parseFloat((startValue - (step * index)).toFixed(2));
+      });
       
       setFilteredTopics([...blockchainAndFintech, ...others]);
       return;
@@ -126,6 +136,20 @@ export const useMarketTopics = () => {
         };
       })
       .sort((a, b) => (b.similarity || 0) - (a.similarity || 0)); // Sort by similarity score (descending)
+      
+      // Normalize scores to range from 1.0 to 0.2 after sorting
+      if (filtered.length > 0) {
+        const maxScore = 1.0;
+        const minScore = 0.2;
+        const range = maxScore - minScore;
+        
+        filtered.forEach((topic, index) => {
+          const normalizedScore = index === 0 
+            ? maxScore 
+            : maxScore - (range * (index / (filtered.length - 1 || 1)));
+          topic.similarity = parseFloat(normalizedScore.toFixed(2));
+        });
+      }
     
     setFilteredTopics(filtered);
   };

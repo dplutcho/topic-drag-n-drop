@@ -4,6 +4,7 @@ import SearchBar from "./SearchBar";
 import SearchResults from "./SearchResults";
 import DropZone from "./DropZone";
 import TopicOutputGenerator from "./TopicOutputGenerator";
+import TagInput from "./TagInput";
 import { useMarketTopics } from "@/hooks/useMarketTopics";
 
 const MarketTopicSelector = () => {
@@ -42,6 +43,10 @@ const MarketTopicSelector = () => {
             </button>
           </div>
         </div>
+      </div>
+      
+      <div className="mb-4">
+        <TagInput onTagsChange={(tags) => console.log("Tags updated:", tags)} />
       </div>
       
       <DragDropContext onDragEnd={handleDragEnd}>

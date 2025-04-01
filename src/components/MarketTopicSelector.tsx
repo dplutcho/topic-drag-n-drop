@@ -20,8 +20,31 @@ const MarketTopicSelector = () => {
     <div className="container mx-auto py-6">
       <h1 className="text-3xl font-bold mb-8 text-center">Audience Builder</h1>
       
-      <div className="mb-6">
-        <SearchBar onSearch={handleSearch} />
+      <div className="mb-6 flex gap-4">
+        <div className="flex-1">
+          <SearchBar onSearch={handleSearch} />
+        </div>
+        <div className="w-80">
+          <div className="relative">
+            <input
+              placeholder="Segment name"
+              className="w-full h-12 px-3 rounded-md border border-input bg-background"
+            />
+            <button 
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-primary text-primary-foreground hover:bg-primary/90 h-8 rounded-md px-3 text-sm"
+              onClick={() => {
+                const segmentNameInput = document.querySelector('input[placeholder="Segment name"]') as HTMLInputElement;
+                if (segmentNameInput && segmentNameInput.value) {
+                  alert(`Segment "${segmentNameInput.value}" saved successfully`);
+                } else {
+                  alert("Please enter a segment name");
+                }
+              }}
+            >
+              Save
+            </button>
+          </div>
+        </div>
       </div>
       
       <DragDropContext onDragEnd={handleDragEnd}>

@@ -1,50 +1,77 @@
-import MarketTopicSelector from "@/components/MarketTopicSelector";
-import RequestTopicForm from "@/components/RequestTopicForm";
-import { toast } from "sonner";
 
-const Index = () => {
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
+import { Trash2, Edit } from "lucide-react";
+
+// Sample audience data
+const initialAudiences = [
+  { id: 1, name: "Website Visitors", updated: "Apr 17, 2024" },
+  { id: 2, name: "Newsletter Subscribers", updated: "Apr 10, 2024" },
+  { id: 3, name: "Leads", updated: "Apr 5, 2024" },
+  { id: 4, name: "App Users", updated: "Apr 1, 2024" },
+];
+
+export function Index() {
+  const [audiences, setAudiences] = useState(initialAudiences);
+
+  const handleDelete = (id: number) => {
+    if (confirm("Are you sure you want to delete this audience?")) {
+      setAudiences(audiences.filter(audience => audience.id !== id));
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-slate-100">
-      <MarketTopicSelector />
-      <div className="container mx-auto pb-8">
-        <div className="flex flex-col md:flex-row gap-4">
-          <div className="md:w-2/3">
-            <RequestTopicForm />
-          </div>
-          <div className="md:w-1/3">
-            <div className="mt-4 bg-white p-3 rounded-lg shadow-sm">
-              <h2 className="text-lg font-semibold mb-2">Publish Segment</h2>
-              <div className="space-y-3">
-                <div>
-                  <label htmlFor="segmentName" className="text-xs block mb-1">
-                    Poolparty Segment Name
-                  </label>
-                  <input
-                    id="segmentName"
-                    type="text"
-                    className="w-full h-8 text-sm border border-gray-300 rounded-md px-2"
-                    placeholder="Enter segment name"
-                  />
-                </div>
-                <div className="flex justify-end">
-                  <button
-                    className="text-xs h-7 px-3 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md"
-                    onClick={() => {
-                      toast.success(
-                        "Published to PoolParty: ID = ClientTax/32543",
-                      );
-                    }}
-                  >
-                    Publish segment
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+    <div className="container mx-auto py-8 px-4">
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold">Audiences</h1>
+        <Link to="/dashboard">
+          <Button className="bg-blue-600 hover:bg-blue-700">
+            Audience Builder
+          </Button>
+        </Link>
+      </div>
+
+      <div className="bg-white rounded-md shadow">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="w-2/3">Name</TableHead>
+              <TableHead className="w-1/3">Updated</TableHead>
+              <TableHead className="w-32 text-right"></TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {audiences.map((audience) => (
+              <TableRow key={audience.id}>
+                <TableCell className="font-medium">{audience.name}</TableCell>
+                <TableCell>{audience.updated}</TableCell>
+                <TableCell className="text-right">
+                  <div className="flex justify-end gap-2">
+                    <Link to={`/dashboard?id=${audience.id}`}>
+                      <Button variant="ghost" size="icon">
+                        <Edit className="h-4 w-4" />
+                        <span className="sr-only">Edit</span>
+                      </Button>
+                    </Link>
+                    <Button 
+                      variant="ghost" 
+                      size="icon"
+                      onClick={() => handleDelete(audience.id)}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                      <span className="sr-only">Delete</span>
+                    </Button>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
       </div>
     </div>
   );
-};
+}
 
 export default Index;

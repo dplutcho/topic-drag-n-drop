@@ -1,16 +1,22 @@
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
+import {
+  Table,
+  TableHeader,
+  TableRow,
+  TableHead,
+  TableBody,
+  TableCell,
+} from "@/components/ui/table";
 import { Trash2, Edit } from "lucide-react";
 
 // Sample audience data
 const initialAudiences = [
-  { id: 1, name: "Website Visitors", updated: "Apr 17, 2024" },
-  { id: 2, name: "Newsletter Subscribers", updated: "Apr 10, 2024" },
-  { id: 3, name: "Leads", updated: "Apr 5, 2024" },
-  { id: 4, name: "App Users", updated: "Apr 1, 2024" },
+  { id: 1, name: "SIEM security France", updated: "Apr 17, 2024" },
+  { id: 2, name: "Next Gen router security", updated: "Apr 10, 2024" },
+  { id: 3, name: "CIEM for NA executives", updated: "Apr 5, 2024" },
+  { id: 4, name: "Data Loss Protection", updated: "Apr 1, 2024" },
 ];
 
 export function Index() {
@@ -18,17 +24,17 @@ export function Index() {
 
   const handleDelete = (id: number) => {
     if (confirm("Are you sure you want to delete this audience?")) {
-      setAudiences(audiences.filter(audience => audience.id !== id));
+      setAudiences(audiences.filter((audience) => audience.id !== id));
     }
   };
 
   return (
     <div className="container mx-auto py-8 px-4">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Audiences</h1>
+        <h1 className="text-2xl font-bold">Palo Alto Networks</h1>
         <Link to="/dashboard">
           <Button className="bg-blue-600 hover:bg-blue-700">
-            Audience Builder
+            Create an audience
           </Button>
         </Link>
       </div>
@@ -55,8 +61,8 @@ export function Index() {
                         <span className="sr-only">Edit</span>
                       </Button>
                     </Link>
-                    <Button 
-                      variant="ghost" 
+                    <Button
+                      variant="ghost"
                       size="icon"
                       onClick={() => handleDelete(audience.id)}
                     >

@@ -1,4 +1,3 @@
-
 export interface TopicChild {
   id: string;
   name: string;
@@ -9,6 +8,8 @@ export interface Topic {
   id: string;
   name: string;
   children: TopicChild[];
+  dropZoneId?: string;
+  similarityScore?: number;
 }
 
 // Mock data for topics with hierarchies
@@ -104,4 +105,3 @@ export const topicsData: Topic[] = [
     ],
   },
 ];
-

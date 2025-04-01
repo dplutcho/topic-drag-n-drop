@@ -74,7 +74,7 @@ const TopicItem = ({
         </div>
         
         {/* Only show market share for topics in the Core Topics box */}
-        {inDropZone && topic.dropZoneId === "coreTopics" && (
+        {inDropZone && topic.dropZoneId && topic.dropZoneId === "coreTopics" && (
           <div className="flex items-center">
             <div className="flex items-center">
               <div className="h-2 w-20 bg-slate-200 rounded-full overflow-hidden">

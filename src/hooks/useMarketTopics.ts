@@ -130,9 +130,19 @@ export const useMarketTopics = () => {
       };
       
       if (destination.droppableId === "coreTopics") {
-        setCoreTopics([...coreTopics, topicClone]);
+        // Preserve the topic as-is, just adding the dropZoneId
+        const preservedTopic = {
+          ...topicClone,
+          dropZoneId: "coreTopics"
+        };
+        setCoreTopics([...coreTopics, preservedTopic]);
       } else if (destination.droppableId === "supportiveTopics") {
-        setSupportiveTopics([...supportiveTopics, topicClone]);
+        // Preserve the topic as-is, just adding the dropZoneId
+        const preservedTopic = {
+          ...topicClone,
+          dropZoneId: "supportiveTopics"
+        };
+        setSupportiveTopics([...supportiveTopics, preservedTopic]);
       }
     }
     else if (
@@ -142,13 +152,23 @@ export const useMarketTopics = () => {
       if (source.droppableId === "coreTopics" && destination.droppableId === "supportiveTopics") {
         const newCoreTopics = Array.from(coreTopics);
         const [movedTopic] = newCoreTopics.splice(source.index, 1);
+        // Update dropZoneId but preserve everything else
+        const preservedTopic = {
+          ...movedTopic,
+          dropZoneId: "supportiveTopics"
+        };
         setCoreTopics(newCoreTopics);
-        setSupportiveTopics([...supportiveTopics, movedTopic]);
+        setSupportiveTopics([...supportiveTopics, preservedTopic]);
       } else if (source.droppableId === "supportiveTopics" && destination.droppableId === "coreTopics") {
         const newSupportiveTopics = Array.from(supportiveTopics);
         const [movedTopic] = newSupportiveTopics.splice(source.index, 1);
+        // Update dropZoneId but preserve everything else
+        const preservedTopic = {
+          ...movedTopic,
+          dropZoneId: "coreTopics"
+        };
         setSupportiveTopics(newSupportiveTopics);
-        setCoreTopics([...coreTopics, movedTopic]);
+        setCoreTopics([...coreTopics, preservedTopic]);
       }
     }
     else if (

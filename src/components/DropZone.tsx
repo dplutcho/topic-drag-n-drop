@@ -67,7 +67,7 @@ const DropZone = ({
                       {...provided.dragHandleProps}
                     >
                       <TopicItem 
-                        topic={{...topic, dropZoneId: id}}
+                        topic={topic}
                         inDropZone={true} 
                         onChildSelectionChange={onChildSelectionChange}
                       />

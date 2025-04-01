@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { ChevronRight, ChevronDown } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -19,7 +20,7 @@ const TopicItem = ({
   onChildSelectionChange 
 }: TopicItemProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
-
+  
   // Get the normalized market share percentage
   const marketShare = getMarketShare(topic.id);
 
@@ -49,13 +50,23 @@ const TopicItem = ({
       >
         <div className="flex items-center flex-1">
           <span className="font-medium">{topic.name}</span>
-          {!inDropZone && topic.similarityScore !== undefined && (
-            <span className="ml-2 text-sm bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full">
-              {topic.similarityScore.toFixed(2)}
-            </span>
+          {inDropZone && topic.children.length > 0 && (
+            <button 
+              className="ml-2 p-1 hover:bg-slate-100 rounded-full"
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsExpanded(!isExpanded);
+              }}
+            >
+              {isExpanded ? (
+                <ChevronDown className="h-4 w-4 text-slate-500" />
+              ) : (
+                <ChevronRight className="h-4 w-4 text-slate-500" />
+              )}
+            </button>
           )}
         </div>
-
+        
         {/* Only show market share for topics in the Core Topics box */}
         {inDropZone && topic.dropZoneId === "coreTopics" && (
           <div className="flex items-center">

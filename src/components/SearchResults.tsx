@@ -8,13 +8,6 @@ interface SearchResultsProps {
 }
 
 const SearchResults = ({ topics }: SearchResultsProps) => {
-  // Sort topics by similarity score in descending order
-  const sortedTopics = [...topics].sort((a, b) => {
-    const scoreA = a.similarityScore ?? 0;
-    const scoreB = b.similarityScore ?? 0;
-    return scoreB - scoreA;
-  });
-  
   return (
     <Droppable droppableId="searchResults">
       {(provided) => (
@@ -24,12 +17,12 @@ const SearchResults = ({ topics }: SearchResultsProps) => {
           className="bg-slate-50 rounded-lg p-4 h-[calc(100vh-250px)] overflow-y-auto"
         >
           <h2 className="text-lg font-semibold mb-3">Search Results</h2>
-          {sortedTopics.length === 0 ? (
+          {topics.length === 0 ? (
             <div className="text-center py-8 text-slate-500">
               No topics found. Try a different search term.
             </div>
           ) : (
-            sortedTopics.map((topic, index) => (
+            topics.map((topic, index) => (
               <Draggable key={topic.id} draggableId={topic.id} index={index}>
                 {(provided) => (
                   <div

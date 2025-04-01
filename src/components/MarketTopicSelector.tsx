@@ -65,7 +65,7 @@ const MarketTopicSelector = () => {
           <div className="lg:col-span-1">
             <DropZone 
               id="coreTopics" 
-              title="Core Topics" 
+              title="Core Audience" 
               topics={coreTopics} 
               className="bg-blue-50 border border-blue-100"
               tooltipText="Topics that are the core of your solution, tool, offering e.g. 'FinTech Platform' or 'Bitcoin'. The Core Topics define the market/audience and determine the Intent used to identify that audience."
@@ -78,7 +78,7 @@ const MarketTopicSelector = () => {
           <div className="lg:col-span-1">
             <DropZone 
               id="supportiveTopics" 
-              title="Supporting Topics" 
+              title="Also Interested in" 
               topics={supportiveTopics} 
               className="bg-green-50 border border-green-100"
               tooltipText="Topics that the prospects are also interested in but does NOT define your core solution or your core audience. These topics are always within the context of the core topics.e.g The prospect is reading about AI in FinTech."

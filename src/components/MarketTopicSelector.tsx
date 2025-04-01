@@ -21,8 +21,17 @@ const MarketTopicSelector = () => {
       <h1 className="text-3xl font-bold mb-8 text-center">Audience Builder</h1>
       
       <div className="mb-6 flex gap-4">
-        <div className="flex-1">
-          <SearchBar onSearch={handleSearch} />
+        <div className="flex-1 flex gap-2">
+          <div className="flex-1">
+            <SearchBar onSearch={handleSearch} />
+          </div>
+          <div className="w-40">
+            <select className="h-12 px-3 rounded-md border border-input bg-background w-full text-sm">
+              <option value="keywords">Keywords/text</option>
+              <option value="url">URL</option>
+              <option value="document">Document</option>
+            </select>
+          </div>
         </div>
         <div className="w-80">
           <div className="relative">

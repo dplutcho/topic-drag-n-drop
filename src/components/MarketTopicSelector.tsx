@@ -14,7 +14,8 @@ const MarketTopicSelector = () => {
     supportiveTopics,
     handleSearch,
     handleDragEnd,
-    handleChildSelectionChange
+    handleChildSelectionChange,
+    getCurrentAudienceState
   } = useMarketTopics();
 
   return (

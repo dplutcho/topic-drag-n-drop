@@ -1,5 +1,6 @@
-
 import { DragDropContext } from "react-beautiful-dnd";
+import { Link } from "react-router-dom";
+import { ChevronLeft } from "lucide-react";
 import SearchBar from "./SearchBar";
 import SearchResults from "./SearchResults";
 import DropZone from "./DropZone";
@@ -20,8 +21,14 @@ const MarketTopicSelector = () => {
 
   return (
     <div className="container mx-auto py-6">
+      <div className="flex items-center mb-8">
+        <Link to="/audience-listing" className="flex items-center text-gray-500 hover:text-gray-700">
+          <ChevronLeft className="h-6 w-6 mr-2" />
+          Back to Audience Listing
+        </Link>
+      </div>
       <h1 className="text-3xl font-bold mb-8 text-center">Audience Builder</h1>
-      
+
       <div className="mb-6 flex gap-4 justify-end">
         <div className="w-80">
           <div className="relative">
@@ -37,7 +44,7 @@ const MarketTopicSelector = () => {
                   // Get existing audiences from localStorage
                   const existingAudiences = localStorage.getItem('audiences');
                   const audiences = existingAudiences ? JSON.parse(existingAudiences) : [];
-                  
+
                   // Create new audience object
                   const newAudience = {
                     id: Date.now(),
@@ -45,11 +52,11 @@ const MarketTopicSelector = () => {
                     updated: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
                     data: getCurrentAudienceState()
                   };
-                  
+
                   // Add new audience and save to localStorage
                   const updatedAudiences = [...audiences, newAudience];
                   localStorage.setItem('audiences', JSON.stringify(updatedAudiences));
-                  
+
                   alert(`Segment "${segmentNameInput.value}" saved successfully`);
                   segmentNameInput.value = '';
                 } else {
@@ -62,17 +69,17 @@ const MarketTopicSelector = () => {
           </div>
         </div>
       </div>
-      
+
       <div className="mb-4">
         <TagInput onTagsChange={(tags) => console.log("Tags updated:", tags)} />
       </div>
-      
+
       <DragDropContext onDragEnd={handleDragEnd}>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-1">
             <SearchResults topics={filteredTopics} />
           </div>
-          
+
           <div className="lg:col-span-1">
             <DropZone 
               id="coreTopics" 
@@ -85,7 +92,7 @@ const MarketTopicSelector = () => {
               }
             />
           </div>
-          
+
           <div className="lg:col-span-1">
             <DropZone 
               id="supportiveTopics" 

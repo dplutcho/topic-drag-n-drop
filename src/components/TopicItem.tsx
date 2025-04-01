@@ -4,6 +4,7 @@ import { ChevronRight, ChevronDown } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Topic, TopicChild } from "@/data/topicsData";
 import { cn } from "@/lib/utils";
+import { getMarketShare } from "@/hooks/useMarketTopics";
 
 interface TopicItemProps {
   topic: Topic;
@@ -20,11 +21,8 @@ const TopicItem = ({
 }: TopicItemProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
   
-  // Generate a completely random market share percentage
-  const [marketShare] = useState(() => {
-    // Generate a random number between 5 and 95
-    return Math.floor(Math.random() * 91) + 5;
-  });
+  // Get the normalized market share percentage
+  const marketShare = getMarketShare(topic.id);
 
   const handleToggleExpand = () => {
     if (inDropZone) {

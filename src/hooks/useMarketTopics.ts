@@ -3,12 +3,64 @@ import { useState, useEffect } from "react";
 import { DropResult } from "react-beautiful-dnd";
 import { Topic, topicsData } from "@/data/topicsData";
 
+// Create a map to store and normalize market share percentages
+const marketShareMap = new Map<string, number>();
+
+// Function to normalize market shares to sum to 100%
+export const normalizeMarketShares = (topics: Topic[]) => {
+  // If no topics, nothing to normalize
+  if (topics.length === 0) return;
+  
+  // Generate random values for any topics that don't have market share yet
+  topics.forEach(topic => {
+    if (!marketShareMap.has(topic.id)) {
+      // Generate value between 5 and 95
+      marketShareMap.set(topic.id, Math.floor(Math.random() * 91) + 5);
+    }
+  });
+  
+  // Calculate sum of all market shares for current topics
+  let sum = 0;
+  topics.forEach(topic => {
+    sum += marketShareMap.get(topic.id) || 0;
+  });
+  
+  // Normalize to 100%
+  if (sum > 0) {
+    topics.forEach(topic => {
+      const currentShare = marketShareMap.get(topic.id) || 0;
+      marketShareMap.set(topic.id, Math.round((currentShare / sum) * 100));
+    });
+    
+    // Check for rounding errors and adjust last item if needed
+    let newSum = 0;
+    topics.slice(0, -1).forEach(topic => {
+      newSum += marketShareMap.get(topic.id) || 0;
+    });
+    
+    if (topics.length > 0) {
+      const lastTopic = topics[topics.length - 1];
+      marketShareMap.set(lastTopic.id, 100 - newSum);
+    }
+  }
+};
+
+// Function to get market share for a topic
+export const getMarketShare = (topicId: string): number => {
+  return marketShareMap.get(topicId) || 0;
+};
+
 export const useMarketTopics = () => {
   const [allTopics, setAllTopics] = useState<Topic[]>(topicsData);
   const [filteredTopics, setFilteredTopics] = useState<Topic[]>(topicsData);
   const [coreTopics, setCoreTopics] = useState<Topic[]>([]);
   const [supportiveTopics, setSupportiveTopics] = useState<Topic[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
+
+  // Normalize market shares whenever core topics change
+  useEffect(() => {
+    normalizeMarketShares(coreTopics);
+  }, [coreTopics]);
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);

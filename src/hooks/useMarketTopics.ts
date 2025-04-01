@@ -261,12 +261,38 @@ export const useMarketTopics = () => {
     }
   };
 
+  // Get serializable audience state for saving
+  const getCurrentAudienceState = () => {
+    return {
+      coreTopics: coreTopics.map(topic => ({
+        ...topic,
+        children: topic.children.map(child => ({
+          ...child
+        }))
+      })),
+      supportiveTopics: supportiveTopics.map(topic => ({
+        ...topic,
+        children: topic.children.map(child => ({
+          ...child
+        }))
+      }))
+    };
+  };
+
+  // Set audience state from saved data
+  const setAudienceState = (state: { coreTopics: Topic[], supportiveTopics: Topic[] }) => {
+    if (state.coreTopics) setCoreTopics(state.coreTopics);
+    if (state.supportiveTopics) setSupportiveTopics(state.supportiveTopics);
+  };
+
   return {
     filteredTopics,
     coreTopics,
     supportiveTopics,
     handleSearch,
     handleDragEnd,
-    handleChildSelectionChange
+    handleChildSelectionChange,
+    getCurrentAudienceState,
+    setAudienceState
   };
 };

@@ -33,7 +33,24 @@ const MarketTopicSelector = () => {
               onClick={() => {
                 const segmentNameInput = document.querySelector('input[placeholder="Segment name"]') as HTMLInputElement;
                 if (segmentNameInput && segmentNameInput.value) {
+                  // Get existing audiences from localStorage
+                  const existingAudiences = localStorage.getItem('audiences');
+                  const audiences = existingAudiences ? JSON.parse(existingAudiences) : [];
+                  
+                  // Create new audience object
+                  const newAudience = {
+                    id: Date.now(),
+                    name: segmentNameInput.value,
+                    updated: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+                    data: getCurrentAudienceState()
+                  };
+                  
+                  // Add new audience and save to localStorage
+                  const updatedAudiences = [...audiences, newAudience];
+                  localStorage.setItem('audiences', JSON.stringify(updatedAudiences));
+                  
                   alert(`Segment "${segmentNameInput.value}" saved successfully`);
+                  segmentNameInput.value = '';
                 } else {
                   alert("Please enter a segment name");
                 }

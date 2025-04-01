@@ -12,6 +12,7 @@ import {
 import { Trash2, Edit } from "lucide-react";
 
 // Sample audience data
+// Initial audiences used as fallback if no saved data exists
 const initialAudiences = [
   { id: 1, name: "SIEM security France", updated: "Apr 17, 2024" },
   { id: 2, name: "Next Gen router security", updated: "Apr 10, 2024" },
@@ -20,11 +21,23 @@ const initialAudiences = [
 ];
 
 export function Index() {
-  const [audiences, setAudiences] = useState(initialAudiences);
+  const [audiences, setAudiences] = useState<any[]>([]);
+  
+  // Load audiences from localStorage on component mount
+  useEffect(() => {
+    const savedAudiences = localStorage.getItem('audiences');
+    if (savedAudiences) {
+      setAudiences(JSON.parse(savedAudiences));
+    } else {
+      setAudiences(initialAudiences);
+    }
+  }, []);
 
   const handleDelete = (id: number) => {
     if (confirm("Are you sure you want to delete this audience?")) {
-      setAudiences(audiences.filter((audience) => audience.id !== id));
+      const updatedAudiences = audiences.filter((audience) => audience.id !== id);
+      setAudiences(updatedAudiences);
+      localStorage.setItem('audiences', JSON.stringify(updatedAudiences));
     }
   };
 

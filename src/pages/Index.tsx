@@ -1,4 +1,5 @@
-import { useState } from "react";
+
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,20 +12,29 @@ import {
 } from "@/components/ui/table";
 import { Trash2, Edit } from "lucide-react";
 
-// Sample audience data
-const initialAudiences = [
-  { id: 1, name: "Next gen firewall in France", updated: "Apr 17, 2024" },
-  { id: 2, name: "Prisma SASE NA", updated: "Apr 10, 2024" },
-  { id: 3, name: "SIEM Security Executives", updated: "Apr 5, 2024" },
-  { id: 4, name: "Zero trust network security", updated: "Apr 1, 2024" },
-];
+// Interface for audience data
+interface Audience {
+  id: number;
+  name: string;
+  updated: string;
+}
 
 export function Index() {
-  const [audiences, setAudiences] = useState(initialAudiences);
+  const [audiences, setAudiences] = useState<Audience[]>([]);
+
+  // Load audiences from local storage on component mount
+  useEffect(() => {
+    const storedAudiences = localStorage.getItem('audiences');
+    if (storedAudiences) {
+      setAudiences(JSON.parse(storedAudiences));
+    }
+  }, []);
 
   const handleDelete = (id: number) => {
     if (confirm("Are you sure you want to delete this audience?")) {
-      setAudiences(audiences.filter((audience) => audience.id !== id));
+      const updatedAudiences = audiences.filter((audience) => audience.id !== id);
+      setAudiences(updatedAudiences);
+      localStorage.setItem('audiences', JSON.stringify(updatedAudiences));
     }
   };
 
@@ -36,7 +46,7 @@ export function Index() {
         </h1>
         <Link to="/dashboard">
           <Button className="bg-blue-600 hover:bg-blue-700">
-            Create an audience
+            Audience Builder
           </Button>
         </Link>
       </div>
@@ -51,30 +61,38 @@ export function Index() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {audiences.map((audience) => (
-              <TableRow key={audience.id}>
-                <TableCell className="font-medium">{audience.name}</TableCell>
-                <TableCell>{audience.updated}</TableCell>
-                <TableCell className="text-right">
-                  <div className="flex justify-end gap-2">
-                    <Link to={`/dashboard?id=${audience.id}`}>
-                      <Button variant="ghost" size="icon">
-                        <Edit className="h-4 w-4" />
-                        <span className="sr-only">Edit</span>
+            {audiences.length > 0 ? (
+              audiences.map((audience) => (
+                <TableRow key={audience.id}>
+                  <TableCell className="font-medium">{audience.name}</TableCell>
+                  <TableCell>{audience.updated}</TableCell>
+                  <TableCell className="text-right">
+                    <div className="flex justify-end gap-2">
+                      <Link to={`/dashboard?id=${audience.id}`}>
+                        <Button variant="ghost" size="icon">
+                          <Edit className="h-4 w-4" />
+                          <span className="sr-only">Edit</span>
+                        </Button>
+                      </Link>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => handleDelete(audience.id)}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                        <span className="sr-only">Delete</span>
                       </Button>
-                    </Link>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => handleDelete(audience.id)}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                      <span className="sr-only">Delete</span>
-                    </Button>
-                  </div>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={3} className="text-center py-6 text-gray-500">
+                  No audiences found. Click "Audience Builder" to create one.
                 </TableCell>
               </TableRow>
-            ))}
+            )}
           </TableBody>
         </Table>
       </div>

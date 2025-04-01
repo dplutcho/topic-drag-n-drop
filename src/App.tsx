@@ -1,19 +1,10 @@
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Index } from "./pages/Index";
-import { DragDropContext } from "react-beautiful-dnd";
 import { Toaster } from "@/components/ui/toaster";
-import MarketTopicSelector from "./components/MarketTopicSelector";
+import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import "./App.css";
-
-const Dashboard = () => {
-  return (
-    <DragDropContext onDragEnd={() => {}}>
-      <MarketTopicSelector />
-    </DragDropContext>
-  );
-};
 
 function App() {
   return (

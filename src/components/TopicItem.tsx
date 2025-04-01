@@ -20,15 +20,11 @@ const TopicItem = ({
 }: TopicItemProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
   
-  // Generate a consistent market share percentage based on topic id
-  const getMarketShare = () => {
-    // Use the last character of the id (converted to number if possible) to generate a percentage
-    const lastChar = topic.id.slice(-1);
-    const basePercentage = isNaN(parseInt(lastChar)) ? 25 : parseInt(lastChar) * 10;
-    return Math.max(10, Math.min(95, basePercentage)); // Ensure between 10% and 95%
-  };
-  
-  const marketShare = getMarketShare();
+  // Generate a completely random market share percentage
+  const [marketShare] = useState(() => {
+    // Generate a random number between 5 and 95
+    return Math.floor(Math.random() * 91) + 5;
+  });
 
   const handleToggleExpand = () => {
     if (inDropZone) {
@@ -73,7 +69,7 @@ const TopicItem = ({
           )}
         </div>
         
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center">
           <div className="flex items-center">
             <div className="h-2 w-20 bg-slate-200 rounded-full overflow-hidden">
               <div 
@@ -82,9 +78,6 @@ const TopicItem = ({
               ></div>
             </div>
             <span className="text-xs ml-1.5 text-slate-700">{marketShare}%</span>
-          </div>
-          <div className="text-xs text-slate-500">
-            {topic.children.length} subtopics
           </div>
         </div>
       </div>

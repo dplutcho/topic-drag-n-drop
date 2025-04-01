@@ -1,4 +1,3 @@
-
 export interface TopicChild {
   id: string;
   name: string;
@@ -13,6 +12,24 @@ export interface Topic {
 
 // Mock data for topics with hierarchies
 export const topicsData: Topic[] = [
+  {
+    id: "t7",
+    name: "Blockchain",
+    children: [
+      { id: "t7c1", name: "Cryptocurrencies", selected: true },
+      { id: "t7c2", name: "Smart Contracts", selected: true },
+      { id: "t7c3", name: "Decentralized Finance", selected: true },
+    ],
+  },
+  {
+    id: "t8",
+    name: "Fintech",
+    children: [
+      { id: "t8c1", name: "Digital Banking", selected: true },
+      { id: "t8c2", name: "Payment Processing", selected: true },
+      { id: "t8c3", name: "Investment Platforms", selected: true },
+    ],
+  },
   {
     id: "t1",
     name: "E-commerce",
@@ -68,24 +85,6 @@ export const topicsData: Topic[] = [
     ],
   },
   {
-    id: "t7",
-    name: "Blockchain",
-    children: [
-      { id: "t7c1", name: "Cryptocurrencies", selected: true },
-      { id: "t7c2", name: "Smart Contracts", selected: true },
-      { id: "t7c3", name: "Decentralized Finance", selected: true },
-    ],
-  },
-  {
-    id: "t8",
-    name: "Fintech",
-    children: [
-      { id: "t8c1", name: "Digital Banking", selected: true },
-      { id: "t8c2", name: "Payment Processing", selected: true },
-      { id: "t8c3", name: "Investment Platforms", selected: true },
-    ],
-  },
-  {
     id: "t9",
     name: "Healthcare Technology",
     children: [
@@ -104,4 +103,3 @@ export const topicsData: Topic[] = [
     ],
   },
 ];
-

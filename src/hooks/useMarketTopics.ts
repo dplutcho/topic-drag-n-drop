@@ -66,21 +66,52 @@ export const useMarketTopics = () => {
     setSearchQuery(query);
     
     if (!query.trim()) {
-      setFilteredTopics(allTopics.filter(
-        topic => !coreTopics.some(ct => ct.id === topic.id) && 
-                !supportiveTopics.some(st => st.id === topic.id)
-      ));
+      const filteredWithScores = allTopics
+        .filter(
+          topic => !coreTopics.some(ct => ct.id === topic.id) && 
+                  !supportiveTopics.some(st => st.id === topic.id)
+        )
+        .map(topic => ({
+          ...topic,
+          similarityScore: Math.random()  // Random score between 0-1 for demonstration
+        }));
+      setFilteredTopics(filteredWithScores);
       return;
     }
     
     const lowercaseQuery = query.toLowerCase();
-    const filtered = allTopics.filter(
-      topic => 
-        (topic.name.toLowerCase().includes(lowercaseQuery) || 
-         topic.children.some(child => child.name.toLowerCase().includes(lowercaseQuery))) &&
-        !coreTopics.some(ct => ct.id === topic.id) && 
-        !supportiveTopics.some(st => st.id === topic.id)
-    );
+    const filtered = allTopics
+      .filter(
+        topic => 
+          (topic.name.toLowerCase().includes(lowercaseQuery) || 
+           topic.children.some(child => child.name.toLowerCase().includes(lowercaseQuery))) &&
+          !coreTopics.some(ct => ct.id === topic.id) && 
+          !supportiveTopics.some(st => st.id === topic.id)
+      )
+      .map(topic => {
+        // Calculate a more realistic similarity score based on match quality
+        // For demonstration: more characters matching = higher score
+        const nameMatch = topic.name.toLowerCase().includes(lowercaseQuery);
+        const childMatch = topic.children.some(child => 
+          child.name.toLowerCase().includes(lowercaseQuery)
+        );
+        
+        // Calculate score based on match position and length
+        let score = 0;
+        if (nameMatch) {
+          const matchPos = topic.name.toLowerCase().indexOf(lowercaseQuery);
+          // Earlier matches and longer relative matches get higher scores
+          score = Math.max(score, 0.5 + (0.5 * (1 - matchPos / topic.name.length)));
+        }
+        if (childMatch) {
+          score = Math.max(score, 0.7); // Child matches are still relevant but slightly less
+        }
+        
+        return {
+          ...topic,
+          similarityScore: score
+        };
+      });
     
     setFilteredTopics(filtered);
   };

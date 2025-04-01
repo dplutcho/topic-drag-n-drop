@@ -1,6 +1,7 @@
 
 import MarketTopicSelector from "@/components/MarketTopicSelector";
 import RequestTopicForm from "@/components/RequestTopicForm";
+import { toast } from "sonner";
 
 const Index = () => {
   return (
@@ -27,6 +28,9 @@ const Index = () => {
                 <div className="flex justify-end">
                   <button 
                     className="text-xs h-7 px-3 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md"
+                    onClick={() => {
+                      toast.success("Published to PoolParty: ID = ClientTax/32543");
+                    }}
                   >
                     Publish segment
                   </button>

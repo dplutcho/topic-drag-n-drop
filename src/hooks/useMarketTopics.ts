@@ -66,21 +66,62 @@ export const useMarketTopics = () => {
     setSearchQuery(query);
     
     if (!query.trim()) {
-      setFilteredTopics(allTopics.filter(
+      // When no query, show all available topics without similarity score
+      const available = allTopics.filter(
         topic => !coreTopics.some(ct => ct.id === topic.id) && 
                 !supportiveTopics.some(st => st.id === topic.id)
-      ));
+      );
+      available.forEach(topic => topic.similarity = 1.0); // Set default similarity for all
+      
+      // Keep Blockchain and Fintech at the top
+      const blockchainAndFintech = available.filter(topic => 
+        topic.name === "Blockchain" || topic.name === "Fintech"
+      );
+      const others = available.filter(topic => 
+        topic.name !== "Blockchain" && topic.name !== "Fintech"
+      );
+      
+      setFilteredTopics([...blockchainAndFintech, ...others]);
       return;
     }
     
     const lowercaseQuery = query.toLowerCase();
-    const filtered = allTopics.filter(
-      topic => 
-        (topic.name.toLowerCase().includes(lowercaseQuery) || 
-         topic.children.some(child => child.name.toLowerCase().includes(lowercaseQuery))) &&
-        !coreTopics.some(ct => ct.id === topic.id) && 
-        !supportiveTopics.some(st => st.id === topic.id)
-    );
+    const filtered = allTopics
+      .filter(
+        topic => 
+          (topic.name.toLowerCase().includes(lowercaseQuery) || 
+          topic.children.some(child => child.name.toLowerCase().includes(lowercaseQuery))) &&
+          !coreTopics.some(ct => ct.id === topic.id) && 
+          !supportiveTopics.some(st => st.id === topic.id)
+      )
+      .map(topic => {
+        // Calculate similarity score (simple implementation)
+        let similarity = 0;
+        
+        // Exact name match gets high score
+        if (topic.name.toLowerCase() === lowercaseQuery) {
+          similarity = 1.0;
+        }
+        // Partial name match gets proportional score
+        else if (topic.name.toLowerCase().includes(lowercaseQuery)) {
+          similarity = 0.7 + (lowercaseQuery.length / topic.name.length) * 0.3;
+        }
+        // Child match gets lower score
+        else if (topic.children.some(child => child.name.toLowerCase().includes(lowercaseQuery))) {
+          const matchingChild = topic.children.find(child => 
+            child.name.toLowerCase().includes(lowercaseQuery)
+          );
+          similarity = matchingChild 
+            ? 0.5 + (lowercaseQuery.length / matchingChild.name.length) * 0.2 
+            : 0.5;
+        }
+        
+        return {
+          ...topic,
+          similarity
+        };
+      })
+      .sort((a, b) => (b.similarity || 0) - (a.similarity || 0)); // Sort by similarity score (descending)
     
     setFilteredTopics(filtered);
   };

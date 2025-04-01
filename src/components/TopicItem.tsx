@@ -50,6 +50,11 @@ const TopicItem = ({
       >
         <div className="flex items-center flex-1">
           <span className="font-medium">{topic.name}</span>
+          {!inDropZone && topic.similarity !== undefined && (
+            <span className="ml-2 text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full">
+              {topic.similarity.toFixed(1)}
+            </span>
+          )}
           {inDropZone && topic.children.length > 0 && (
             <button 
               className="ml-2 p-1 hover:bg-slate-100 rounded-full"

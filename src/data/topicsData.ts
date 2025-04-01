@@ -8,6 +8,7 @@ export interface Topic {
   id: string;
   name: string;
   children: TopicChild[];
+  similarity?: number; // Score from 0.0 to 1.0 indicating search relevance
 }
 
 // Mock data for topics with hierarchies

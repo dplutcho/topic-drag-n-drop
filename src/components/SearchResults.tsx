@@ -16,7 +16,10 @@ const SearchResults = ({ topics }: SearchResultsProps) => {
           {...provided.droppableProps}
           className="bg-slate-50 rounded-lg p-4 h-[calc(100vh-250px)] overflow-y-auto"
         >
-          <h2 className="text-lg font-semibold mb-3">Search Results</h2>
+          <h2 className="text-lg font-semibold mb-3">
+            Search Results
+            <span className="text-xs font-normal text-gray-500 ml-2">(sorted by relevance)</span>
+          </h2>
           {topics.length === 0 ? (
             <div className="text-center py-8 text-slate-500">
               No topics found. Try a different search term.

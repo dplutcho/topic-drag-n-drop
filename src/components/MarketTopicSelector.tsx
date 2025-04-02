@@ -10,6 +10,7 @@ import TagInput from "./TagInput";
 import { useMarketTopics } from "@/hooks/useMarketTopics";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
+import { topicsData } from "@/data/topicsData";
 
 const MarketTopicSelector = () => {
   const {
@@ -20,7 +21,15 @@ const MarketTopicSelector = () => {
     handleDragEnd,
     handleChildSelectionChange,
     getCurrentAudienceState,
+    setCoreTopics,
+    setSupportiveTopics,
+    setFilteredTopics
   } = useMarketTopics();
+
+  // Initialize with empty filtered topics
+  useEffect(() => {
+    setFilteredTopics([]);
+  }, []);
 
   const [currentTags, setCurrentTags] = useState([]); // Added state for tags
   const [homePageUrl, setHomePageUrl] = useState(""); // Added state for homepage URL

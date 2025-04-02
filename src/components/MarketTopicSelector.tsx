@@ -130,7 +130,6 @@ const MarketTopicSelector = () => {
       </div>
 
       <div className="mb-4">
-        <label htmlFor="homePageUrl" className="block text-sm font-medium text-gray-700 mb-1">Home Page URL</label>
         <Input
           id="homePageUrl"
           type="url"
@@ -140,7 +139,6 @@ const MarketTopicSelector = () => {
       </div>
 
       <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700 mb-1">Keywords</label>
         <TagInput initialTags={currentTags} onTagsChange={setCurrentTags} /> {/* Update tags state with initialTags */}
       </div>
 

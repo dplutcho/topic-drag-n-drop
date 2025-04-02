@@ -186,6 +186,29 @@ const MarketTopicSelector = () => {
             <Button
               className="bg-blue-600 hover:bg-blue-700 text-white"
               size="sm"
+              onClick={() => {
+                // Find Blockchain and Fintech topics from the data
+                const blockchainTopic = topicsData.find(topic => topic.name === "Blockchain");
+                const fintechTopic = topicsData.find(topic => topic.name === "Fintech");
+                
+                // Create a new array with the core topics
+                const newCoreTopics = [];
+                
+                // Add Blockchain if found and not already in core topics
+                if (blockchainTopic && !coreTopics.some(topic => topic.name === "Blockchain")) {
+                  newCoreTopics.push(JSON.parse(JSON.stringify(blockchainTopic)));
+                }
+                
+                // Add Fintech if found and not already in core topics
+                if (fintechTopic && !coreTopics.some(topic => topic.name === "Fintech")) {
+                  newCoreTopics.push(JSON.parse(JSON.stringify(fintechTopic)));
+                }
+                
+                // Update the core topics array
+                if (newCoreTopics.length > 0) {
+                  setCoreTopics([...coreTopics, ...newCoreTopics]);
+                }
+              }}
             >
               ID core topics
             </Button>

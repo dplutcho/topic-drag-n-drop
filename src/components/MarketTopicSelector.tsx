@@ -20,7 +20,6 @@ const MarketTopicSelector = () => {
     handleDragEnd,
     handleChildSelectionChange,
     getCurrentAudienceState,
-    setAudienceState,
   } = useMarketTopics();
 
   const [currentTags, setCurrentTags] = useState([]); // Added state for tags
@@ -59,15 +58,10 @@ const MarketTopicSelector = () => {
           if (audience.homePageUrl) {
             setHomePageUrl(audience.homePageUrl);
           }
-          
-          // Load the saved topics if they exist
-          if (audience.data) {
-            setAudienceState(audience.data);
-          }
         }
       }
     }
-  }, [setAudienceState]);
+  }, []);
 
   return (
     <div className="container mx-auto py-6">

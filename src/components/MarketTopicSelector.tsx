@@ -133,7 +133,7 @@ const MarketTopicSelector = () => {
         <Input
           id="homePageUrl"
           type="url"
-          placeholder="https://example.com"
+          placeholder="Enter your home page URL"
           className="h-12 mb-4"
         />
       </div>

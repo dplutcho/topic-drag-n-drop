@@ -7,6 +7,8 @@ import DropZone from "./DropZone";
 import TopicOutputGenerator from "./TopicOutputGenerator";
 import TagInput from "./TagInput";
 import { useMarketTopics } from "@/hooks/useMarketTopics";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
 
 const MarketTopicSelector = () => {
   const {
@@ -18,6 +20,30 @@ const MarketTopicSelector = () => {
     handleChildSelectionChange,
     getCurrentAudienceState
   } = useMarketTopics();
+  
+  // Pre-fill segment name when editing
+  React.useEffect(() => {
+    // Extract audience ID from URL parameters
+    const params = new URLSearchParams(window.location.search);
+    const audienceId = params.get('id');
+    
+    if (audienceId) {
+      // Load saved audience data
+      const savedAudiences = localStorage.getItem('audiences');
+      if (savedAudiences) {
+        const audiences = JSON.parse(savedAudiences);
+        const audience = audiences.find((a: any) => a.id.toString() === audienceId);
+        
+        if (audience) {
+          // Pre-fill the segment name input
+          const segmentNameInput = document.getElementById('segmentNameInput') as HTMLInputElement;
+          if (segmentNameInput) {
+            segmentNameInput.value = audience.name;
+          }
+        }
+      }
+    }
+  }, []);
 
   return (
     <div className="container mx-auto py-6">
@@ -29,45 +55,68 @@ const MarketTopicSelector = () => {
       </div>
       <h1 className="text-3xl font-bold mb-8 text-center">Audience Builder</h1>
 
-      <div className="mb-6 flex gap-4 justify-end">
-        <div className="w-80">
-          <div className="relative">
-            <input
-              placeholder="Segment name"
-              className="w-full h-12 px-3 rounded-md border border-input bg-background"
-            />
-            <button 
-              className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-primary text-primary-foreground hover:bg-primary/90 h-8 rounded-md px-3 text-sm"
-              onClick={() => {
-                const segmentNameInput = document.querySelector('input[placeholder="Segment name"]') as HTMLInputElement;
-                if (segmentNameInput && segmentNameInput.value) {
-                  // Get existing audiences from localStorage
-                  const existingAudiences = localStorage.getItem('audiences');
-                  const audiences = existingAudiences ? JSON.parse(existingAudiences) : [];
-
-                  // Create new audience object
-                  const newAudience = {
-                    id: Date.now(),
-                    name: segmentNameInput.value,
-                    updated: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-                    data: getCurrentAudienceState()
-                  };
-
-                  // Add new audience and save to localStorage
-                  const updatedAudiences = [...audiences, newAudience];
-                  localStorage.setItem('audiences', JSON.stringify(updatedAudiences));
-
-                  alert(`Segment "${segmentNameInput.value}" saved successfully`);
-                  segmentNameInput.value = '';
-                } else {
-                  alert("Please enter a segment name");
-                }
-              }}
-            >
-              Save
-            </button>
-          </div>
+      <div className="mb-6 flex gap-4 justify-end items-center">
+        <div className="w-64">
+          <Input
+            id="segmentNameInput"
+            placeholder="Segment name"
+            className="h-12"
+          />
         </div>
+        <Button 
+          className="bg-primary text-primary-foreground hover:bg-primary/90 h-12 px-6"
+          onClick={() => {
+            const segmentNameInput = document.getElementById('segmentNameInput') as HTMLInputElement;
+            if (segmentNameInput && segmentNameInput.value) {
+              // Get existing audiences from localStorage
+              const existingAudiences = localStorage.getItem('audiences');
+              const audiences = existingAudiences ? JSON.parse(existingAudiences) : [];
+              
+              // Extract audience ID from URL parameters to check if we're editing
+              const params = new URLSearchParams(window.location.search);
+              const audienceId = params.get('id');
+              
+              if (audienceId) {
+                // Editing an existing audience
+                const updatedAudiences = audiences.map((audience: any) => {
+                  if (audience.id.toString() === audienceId) {
+                    return {
+                      ...audience,
+                      name: segmentNameInput.value,
+                      updated: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+                      data: getCurrentAudienceState()
+                    };
+                  }
+                  return audience;
+                });
+                localStorage.setItem('audiences', JSON.stringify(updatedAudiences));
+                alert(`Segment "${segmentNameInput.value}" updated successfully`);
+              } else {
+                // Creating a new audience
+                const newAudience = {
+                  id: Date.now(),
+                  name: segmentNameInput.value,
+                  updated: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+                  data: getCurrentAudienceState()
+                };
+                
+                // Add new audience and save to localStorage
+                const updatedAudiences = [...audiences, newAudience];
+                localStorage.setItem('audiences', JSON.stringify(updatedAudiences));
+                alert(`Segment "${segmentNameInput.value}" saved successfully`);
+              }
+              
+              // Don't clear input when editing
+              if (!audienceId) {
+                segmentNameInput.value = '';
+              }
+            } else {
+              alert("Please enter a segment name");
+            }
+          }}
+        >
+          Save
+        </Button>
       </div>
 
       <div className="mb-4">

@@ -200,27 +200,7 @@ const MarketTopicSelector = () => {
           </div>
 
           <div className="lg:col-span-1">
-            <div className="rounded-lg border p-4 bg-indigo-50 border-indigo-100 mb-4">
-              <div className="mb-3 flex justify-between items-center">
-                <h3 className="text-lg font-semibold">Request Missing Topic</h3>
-              </div>
-              <div className="flex items-center gap-2 p-3 bg-white rounded-md shadow-sm border border-gray-200">
-                <div className="flex-grow">
-                  <Input 
-                    placeholder="Enter missing topic name"
-                    className="h-10"
-                  />
-                </div>
-                <Button 
-                  size="sm"
-                  className="bg-indigo-600 hover:bg-indigo-700 text-white"
-                >
-                  Request
-                </Button>
-              </div>
-            </div>
-            
-            <div className="rounded-lg border p-4 bg-green-50 border-green-100">
+            <div className="rounded-lg border p-4 bg-green-50 border-green-100 mb-4">
               <div className="mb-3 flex justify-between items-center">
                 <h3 className="text-lg font-semibold">Publish Segment</h3>
               </div>
@@ -237,6 +217,38 @@ const MarketTopicSelector = () => {
                 >
                   Push
                 </Button>
+              </div>
+            </div>
+            
+            <div className="rounded-lg border p-4 bg-indigo-50 border-indigo-100">
+              <div className="mb-3 flex justify-between items-center">
+                <h3 className="text-lg font-semibold">Request Missing Topic</h3>
+              </div>
+              <div className="space-y-3">
+                <div className="flex items-center gap-2 p-3 bg-white rounded-md shadow-sm border border-gray-200">
+                  <div className="flex-grow">
+                    <Input 
+                      placeholder="Enter missing topic name"
+                      className="h-10"
+                      required
+                    />
+                  </div>
+                </div>
+                <div className="p-3 bg-white rounded-md shadow-sm border border-gray-200">
+                  <textarea 
+                    placeholder="Describe this topic (required)"
+                    className="w-full min-h-20 p-2 text-sm border rounded border-input resize-none focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                    required
+                  ></textarea>
+                </div>
+                <div className="flex justify-end">
+                  <Button 
+                    size="sm"
+                    className="bg-indigo-600 hover:bg-indigo-700 text-white"
+                  >
+                    Request
+                  </Button>
+                </div>
               </div>
             </div>
           </div>

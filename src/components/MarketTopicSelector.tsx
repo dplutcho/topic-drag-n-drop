@@ -20,6 +20,7 @@ const MarketTopicSelector = () => {
     handleDragEnd,
     handleChildSelectionChange,
     getCurrentAudienceState,
+    setAudienceState,
   } = useMarketTopics();
 
   const [currentTags, setCurrentTags] = useState([]); // Added state for tags

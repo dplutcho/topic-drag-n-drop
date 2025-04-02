@@ -28,8 +28,10 @@ const MarketTopicSelector = () => {
 
   // Initialize with empty filtered topics
   useEffect(() => {
-    setFilteredTopics([]);
-  }, []);
+    if (setFilteredTopics) {
+      setFilteredTopics([]);
+    }
+  }, [setFilteredTopics]);
 
   const [currentTags, setCurrentTags] = useState([]); // Added state for tags
   const [homePageUrl, setHomePageUrl] = useState(""); // Added state for homepage URL

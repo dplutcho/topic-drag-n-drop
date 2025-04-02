@@ -52,7 +52,7 @@ const DropZone = ({
             )}
           </div>
           
-          {topics.length === 0 ? (
+          {topics.length === 0 && id !== "supportiveTopics" ? (
             <div className="border-2 border-dashed border-slate-300 rounded-lg h-32 flex items-center justify-center text-slate-500">
               Drop topics here
             </div>

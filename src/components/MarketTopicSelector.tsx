@@ -165,7 +165,7 @@ const MarketTopicSelector = () => {
       </div>
 
       <div className="mb-4 border rounded-lg p-4 bg-gray-50">
-        <div className="mb-3">
+        <div className="mb-3 flex justify-start">
           <h2 className="text-md font-semibold">Define your market</h2>
         </div>
         <div className="space-y-4">
@@ -182,7 +182,7 @@ const MarketTopicSelector = () => {
           <div>
             <TagInput initialTags={currentTags} onTagsChange={setCurrentTags} />
           </div>
-          <div className="flex justify-end">
+          <div className="flex justify-start">
             <Button
               className="bg-blue-600 hover:bg-blue-700 text-white"
               size="sm"

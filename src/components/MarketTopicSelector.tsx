@@ -200,29 +200,24 @@ const MarketTopicSelector = () => {
           </div>
 
           <div className="lg:col-span-1">
-            <DropZone
-              id="supportiveTopics"
-              title="Publish Segment"
-              topics={supportiveTopics}
-              className="bg-green-50 border border-green-100"
-              tooltipText="Topics that the prospects are also interested in but does NOT define your core solution or your core audience. These topics are always within the context of the core topics.e.g The prospect is reading about AI in FinTech."
-              onChildSelectionChange={(topicId, childId, selected) =>
-                handleChildSelectionChange(topicId, childId, selected, false)
-              }
-            />
-            <div className="mt-4 flex items-center gap-2 p-3 bg-white rounded-md shadow-sm border border-gray-200">
-              <div className="flex-grow">
-                <Input 
-                  placeholder="ClientTax segment name"
-                  className="h-10"
-                />
+            <div className="rounded-lg border p-4 bg-green-50 border-green-100">
+              <div className="mb-3 flex justify-between items-center">
+                <h3 className="text-lg font-semibold">Publish Segment</h3>
               </div>
-              <Button 
-                size="sm"
-                className="bg-green-600 hover:bg-green-700 text-white"
-              >
-                Push
-              </Button>
+              <div className="flex items-center gap-2 p-3 bg-white rounded-md shadow-sm border border-gray-200">
+                <div className="flex-grow">
+                  <Input 
+                    placeholder="ClientTax segment name"
+                    className="h-10"
+                  />
+                </div>
+                <Button 
+                  size="sm"
+                  className="bg-green-600 hover:bg-green-700 text-white"
+                >
+                  Push
+                </Button>
+              </div>
             </div>
           </div>
         </div>

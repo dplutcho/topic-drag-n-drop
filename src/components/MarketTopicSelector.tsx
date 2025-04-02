@@ -19,7 +19,7 @@ const MarketTopicSelector = () => {
     handleSearch,
     handleDragEnd,
     handleChildSelectionChange,
-    getCurrentAudienceState
+    getCurrentAudienceState,
   } = useMarketTopics();
 
   const [currentTags, setCurrentTags] = useState([]); // Added state for tags
@@ -28,18 +28,22 @@ const MarketTopicSelector = () => {
   useEffect(() => {
     // Extract audience ID from URL parameters
     const params = new URLSearchParams(window.location.search);
-    const audienceId = params.get('id');
+    const audienceId = params.get("id");
 
     if (audienceId) {
       // Load saved audience data
-      const savedAudiences = localStorage.getItem('audiences');
+      const savedAudiences = localStorage.getItem("audiences");
       if (savedAudiences) {
         const audiences = JSON.parse(savedAudiences);
-        const audience = audiences.find((a: any) => a.id.toString() === audienceId);
+        const audience = audiences.find(
+          (a: any) => a.id.toString() === audienceId,
+        );
 
         if (audience) {
           // Pre-fill the segment name input
-          const segmentNameInput = document.getElementById('segmentNameInput') as HTMLInputElement;
+          const segmentNameInput = document.getElementById(
+            "segmentNameInput",
+          ) as HTMLInputElement;
           if (segmentNameInput) {
             segmentNameInput.value = audience.name;
           }
@@ -56,7 +60,10 @@ const MarketTopicSelector = () => {
   return (
     <div className="container mx-auto py-6">
       <div className="flex items-center mb-8">
-        <Link to="/" className="flex items-center text-gray-500 hover:text-gray-700">
+        <Link
+          to="/"
+          className="flex items-center text-gray-500 hover:text-gray-700"
+        >
           <ChevronLeft className="h-6 w-6 mr-2" />
           Back to Audience Listing
         </Link>
@@ -71,18 +78,22 @@ const MarketTopicSelector = () => {
             className="h-12"
           />
         </div>
-        <Button 
+        <Button
           className="bg-primary text-primary-foreground hover:bg-primary/90 h-12 px-6"
           onClick={() => {
-            const segmentNameInput = document.getElementById('segmentNameInput') as HTMLInputElement;
+            const segmentNameInput = document.getElementById(
+              "segmentNameInput",
+            ) as HTMLInputElement;
             if (segmentNameInput && segmentNameInput.value) {
               // Get existing audiences from localStorage
-              const existingAudiences = localStorage.getItem('audiences');
-              const audiences = existingAudiences ? JSON.parse(existingAudiences) : [];
+              const existingAudiences = localStorage.getItem("audiences");
+              const audiences = existingAudiences
+                ? JSON.parse(existingAudiences)
+                : [];
 
               // Extract audience ID from URL parameters to check if we're editing
               const params = new URLSearchParams(window.location.search);
-              const audienceId = params.get('id');
+              const audienceId = params.get("id");
 
               if (audienceId) {
                 // Editing an existing audience
@@ -91,34 +102,50 @@ const MarketTopicSelector = () => {
                     return {
                       ...audience,
                       name: segmentNameInput.value,
-                      updated: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+                      updated: new Date().toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric",
+                      }),
                       data: getCurrentAudienceState(),
-                      tags: currentTags // Include tags in updated audience
+                      tags: currentTags, // Include tags in updated audience
                     };
                   }
                   return audience;
                 });
-                localStorage.setItem('audiences', JSON.stringify(updatedAudiences));
-                alert(`Segment "${segmentNameInput.value}" updated successfully`);
+                localStorage.setItem(
+                  "audiences",
+                  JSON.stringify(updatedAudiences),
+                );
+                alert(
+                  `Segment "${segmentNameInput.value}" updated successfully`,
+                );
               } else {
                 // Creating a new audience
                 const newAudience = {
                   id: Date.now(),
                   name: segmentNameInput.value,
-                  updated: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+                  updated: new Date().toLocaleDateString("en-US", {
+                    month: "short",
+                    day: "numeric",
+                    year: "numeric",
+                  }),
                   data: getCurrentAudienceState(),
-                  tags: currentTags // Include tags in new audience
+                  tags: currentTags, // Include tags in new audience
                 };
 
                 // Add new audience and save to localStorage
                 const updatedAudiences = [...audiences, newAudience];
-                localStorage.setItem('audiences', JSON.stringify(updatedAudiences));
+                localStorage.setItem(
+                  "audiences",
+                  JSON.stringify(updatedAudiences),
+                );
                 alert(`Segment "${segmentNameInput.value}" saved successfully`);
               }
 
               // Don't clear input when editing
               if (!audienceId) {
-                segmentNameInput.value = '';
+                segmentNameInput.value = "";
               }
             } else {
               alert("Please enter a segment name");
@@ -139,19 +166,20 @@ const MarketTopicSelector = () => {
       </div>
 
       <div className="mb-4">
-        <TagInput initialTags={currentTags} onTagsChange={setCurrentTags} /> {/* Update tags state with initialTags */}
+        <TagInput initialTags={currentTags} onTagsChange={setCurrentTags} />{" "}
+        {/* Update tags state with initialTags */}
       </div>
 
       <DragDropContext onDragEnd={handleDragEnd}>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-1">
-            <DropZone 
-              id="coreTopics" 
-              title="Core Audience" 
-              topics={coreTopics} 
+            <DropZone
+              id="coreTopics"
+              title="Core Audience"
+              topics={coreTopics}
               className="bg-blue-50 border border-blue-100"
               tooltipText="Topics that are the core of your solution, tool, offering e.g. 'FinTech Platform' or 'Bitcoin'. The Core Topics define the market/audience and determine the Intent used to identify that audience."
-              onChildSelectionChange={(topicId, childId, selected) => 
+              onChildSelectionChange={(topicId, childId, selected) =>
                 handleChildSelectionChange(topicId, childId, selected, true)
               }
             />
@@ -162,13 +190,13 @@ const MarketTopicSelector = () => {
           </div>
 
           <div className="lg:col-span-1">
-            <DropZone 
-              id="supportiveTopics" 
-              title="Also Interested in" 
-              topics={supportiveTopics} 
+            <DropZone
+              id="supportiveTopics"
+              title="Publish Segment"
+              topics={supportiveTopics}
               className="bg-green-50 border border-green-100"
               tooltipText="Topics that the prospects are also interested in but does NOT define your core solution or your core audience. These topics are always within the context of the core topics.e.g The prospect is reading about AI in FinTech."
-              onChildSelectionChange={(topicId, childId, selected) => 
+              onChildSelectionChange={(topicId, childId, selected) =>
                 handleChildSelectionChange(topicId, childId, selected, false)
               }
             />

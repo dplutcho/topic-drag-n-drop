@@ -1,15 +1,15 @@
-
 import React, { useState, KeyboardEvent } from 'react';
 import { Badge } from './ui/badge';
 import { X } from 'lucide-react';
 import { Input } from './ui/input';
 
 interface TagInputProps {
+  initialTags?: string[];
   onTagsChange?: (tags: string[]) => void;
 }
 
-const TagInput: React.FC<TagInputProps> = ({ onTagsChange }) => {
-  const [tags, setTags] = useState<string[]>(['Market', 'Trends', 'Analyis', 'Growth']);
+const TagInput: React.FC<TagInputProps> = ({ initialTags = [], onTagsChange }) => {
+  const [tags, setTags] = useState<string[]>(initialTags);
   const [inputValue, setInputValue] = useState('');
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {

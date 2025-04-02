@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { DragDropContext } from "react-beautiful-dnd";
 import { Link } from "react-router-dom";
 import { ChevronLeft } from "lucide-react";
@@ -21,25 +21,32 @@ const MarketTopicSelector = () => {
     handleChildSelectionChange,
     getCurrentAudienceState
   } = useMarketTopics();
-  
-  // Pre-fill segment name when editing
-  React.useEffect(() => {
+
+  const [currentTags, setCurrentTags] = useState([]); // Added state for tags
+
+  // Pre-fill segment name and tags when editing
+  useEffect(() => {
     // Extract audience ID from URL parameters
     const params = new URLSearchParams(window.location.search);
     const audienceId = params.get('id');
-    
+
     if (audienceId) {
       // Load saved audience data
       const savedAudiences = localStorage.getItem('audiences');
       if (savedAudiences) {
         const audiences = JSON.parse(savedAudiences);
         const audience = audiences.find((a: any) => a.id.toString() === audienceId);
-        
+
         if (audience) {
           // Pre-fill the segment name input
           const segmentNameInput = document.getElementById('segmentNameInput') as HTMLInputElement;
           if (segmentNameInput) {
             segmentNameInput.value = audience.name;
+          }
+
+          // Pre-fill the tags if they exist
+          if (audience.tags) {
+            setCurrentTags(audience.tags);
           }
         }
       }
@@ -72,11 +79,11 @@ const MarketTopicSelector = () => {
               // Get existing audiences from localStorage
               const existingAudiences = localStorage.getItem('audiences');
               const audiences = existingAudiences ? JSON.parse(existingAudiences) : [];
-              
+
               // Extract audience ID from URL parameters to check if we're editing
               const params = new URLSearchParams(window.location.search);
               const audienceId = params.get('id');
-              
+
               if (audienceId) {
                 // Editing an existing audience
                 const updatedAudiences = audiences.map((audience: any) => {
@@ -85,7 +92,8 @@ const MarketTopicSelector = () => {
                       ...audience,
                       name: segmentNameInput.value,
                       updated: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-                      data: getCurrentAudienceState()
+                      data: getCurrentAudienceState(),
+                      tags: currentTags // Include tags in updated audience
                     };
                   }
                   return audience;
@@ -98,15 +106,16 @@ const MarketTopicSelector = () => {
                   id: Date.now(),
                   name: segmentNameInput.value,
                   updated: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-                  data: getCurrentAudienceState()
+                  data: getCurrentAudienceState(),
+                  tags: currentTags // Include tags in new audience
                 };
-                
+
                 // Add new audience and save to localStorage
                 const updatedAudiences = [...audiences, newAudience];
                 localStorage.setItem('audiences', JSON.stringify(updatedAudiences));
                 alert(`Segment "${segmentNameInput.value}" saved successfully`);
               }
-              
+
               // Don't clear input when editing
               if (!audienceId) {
                 segmentNameInput.value = '';
@@ -121,7 +130,7 @@ const MarketTopicSelector = () => {
       </div>
 
       <div className="mb-4">
-        <TagInput onTagsChange={(tags) => console.log("Tags updated:", tags)} />
+        <TagInput onTagsChange={setCurrentTags} /> {/* Update tags state */}
       </div>
 
       <DragDropContext onDragEnd={handleDragEnd}>

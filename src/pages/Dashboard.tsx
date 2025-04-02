@@ -23,8 +23,35 @@ export function Dashboard() {
         const audience = audiences.find((a: any) => a.id.toString() === audienceId);
 
         if (audience && audience.data) {
-          // Set the audience state with saved data
-          setAudienceState(audience.data);
+          // Find Blockchain and Fintech topics
+          const blockchainTopic = topicsData.find(topic => topic.name === "Blockchain");
+          const fintechTopic = topicsData.find(topic => topic.name === "Fintech");
+          
+          // Make sure these topics are in core audience data
+          const modifiedData = {
+            coreTopics: [...audience.data.coreTopics],
+            supportiveTopics: [...audience.data.supportiveTopics]
+          };
+          
+          // Remove Blockchain and Fintech from supportive if they exist there
+          modifiedData.supportiveTopics = modifiedData.supportiveTopics.filter(
+            topic => topic.name !== "Blockchain" && topic.name !== "Fintech"
+          );
+          
+          // Check if Blockchain is already in core topics
+          const hasBlockchain = modifiedData.coreTopics.some(topic => topic.name === "Blockchain");
+          if (!hasBlockchain && blockchainTopic) {
+            modifiedData.coreTopics.push(JSON.parse(JSON.stringify(blockchainTopic)));
+          }
+          
+          // Check if Fintech is already in core topics
+          const hasFintech = modifiedData.coreTopics.some(topic => topic.name === "Fintech");
+          if (!hasFintech && fintechTopic) {
+            modifiedData.coreTopics.push(JSON.parse(JSON.stringify(fintechTopic)));
+          }
+          
+          // Set the modified audience state
+          setAudienceState(modifiedData);
           setIsLoading(false);
           return;
         }

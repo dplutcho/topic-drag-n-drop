@@ -164,20 +164,33 @@ const MarketTopicSelector = () => {
         </Button>
       </div>
 
-      <div className="mb-4">
-        <Input
-          id="homePageUrl"
-          type="url"
-          placeholder="Enter your home page URL"
-          className="h-12 mb-4"
-          value={homePageUrl}
-          onChange={(e) => setHomePageUrl(e.target.value)}
-        />
-      </div>
-
-      <div className="mb-4">
-        <TagInput initialTags={currentTags} onTagsChange={setCurrentTags} />{" "}
-        {/* Update tags state with initialTags */}
+      <div className="mb-4 border rounded-lg p-4 bg-gray-50">
+        <div className="mb-3">
+          <h3 className="text-md font-semibold">Audience Metadata</h3>
+        </div>
+        <div className="space-y-4">
+          <div>
+            <Input
+              id="homePageUrl"
+              type="url"
+              placeholder="Enter your home page URL"
+              className="h-12"
+              value={homePageUrl}
+              onChange={(e) => setHomePageUrl(e.target.value)}
+            />
+          </div>
+          <div>
+            <TagInput initialTags={currentTags} onTagsChange={setCurrentTags} />
+          </div>
+          <div className="flex justify-end">
+            <Button 
+              className="bg-blue-600 hover:bg-blue-700 text-white"
+              size="sm"
+            >
+              ID core topics
+            </Button>
+          </div>
+        </div>
       </div>
 
       <DragDropContext onDragEnd={handleDragEnd}>

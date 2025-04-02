@@ -182,8 +182,11 @@ const MarketTopicSelector = () => {
       </div>
 
       <div className="mb-4">
-        <TagInput initialTags={currentTags} onTagsChange={setCurrentTags} />{" "}
-        {/* Update tags state with initialTags */}
+        <TagInput 
+          key={currentTags.length} 
+          initialTags={currentTags} 
+          onTagsChange={setCurrentTags} 
+        />
       </div>
 
       <DragDropContext onDragEnd={handleDragEnd}>

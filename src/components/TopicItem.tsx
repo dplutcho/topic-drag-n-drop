@@ -1,90 +1,87 @@
-
-import { useState } from "react";
-import { ChevronRight, ChevronDown } from "lucide-react";
-import { Checkbox } from "@/components/ui/checkbox";
+import React, { useState } from "react";
+import { ChevronDown, ChevronRight } from "lucide-react";
 import { Topic, TopicChild } from "@/data/topicsData";
-import { cn } from "@/lib/utils";
+import { Checkbox } from "@/components/ui/checkbox";
 import { getMarketShare } from "@/hooks/useMarketTopics";
+import { cn } from "@/lib/utils";
 
 interface TopicItemProps {
   topic: Topic;
   isDraggable?: boolean;
   inDropZone: boolean;
   onChildSelectionChange?: (topicId: string, childId: string, selected: boolean) => void;
+  onDragEnd?: (topicId: string, targetZoneId: string) => void; // Added for drag-and-drop handling
 }
 
 const TopicItem = ({ 
   topic, 
-  isDraggable = true, 
   inDropZone, 
-  onChildSelectionChange 
+  onChildSelectionChange,
+  onDragEnd // Added for drag-and-drop handling
 }: TopicItemProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  
-  // Get the normalized market share percentage
-  const marketShare = getMarketShare(topic.id);
 
-  const handleToggleExpand = () => {
-    if (inDropZone) {
-      setIsExpanded(!isExpanded);
-    }
-  };
-
-  const handleChildCheckboxChange = (childId: string, checked: boolean) => {
+  const handleChildCheckboxChange = (childId: string, selected: boolean) => {
     if (onChildSelectionChange) {
-      onChildSelectionChange(topic.id, childId, checked);
+      onChildSelectionChange(topic.id, childId, selected);
     }
   };
+
+  // Use market share from the hook
+  const marketShare = inDropZone && topic.dropZoneId === 'coreTopics' ? getMarketShare(topic.id) : 0;
+
+  // Handle mouse down event to set dragging styles
+  const handleMouseDown = (e: React.MouseEvent) => {
+    const element = e.currentTarget as HTMLDivElement;
+    element.style.cursor = 'grabbing';
+
+    // Cleanup function
+    const handleMouseUp = () => {
+      element.style.cursor = 'grab';
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
+
+    document.addEventListener('mouseup', handleMouseUp);
+  };
+
+  const handleDragEnd = (e: React.DragEvent) => {
+    const targetZoneId = e.target?.closest('[data-zone-id]')?.dataset.zoneId;
+    if(targetZoneId && onDragEnd){
+      onDragEnd(topic.id, targetZoneId);
+    }
+
+  }
 
   return (
     <div 
       className={cn(
-        "bg-white rounded-lg shadow-sm p-3 mb-2 border border-slate-200",
-        inDropZone ? "hover:bg-slate-50 transition-colors" : "",
-        isDraggable ? "cursor-grab active:cursor-grabbing" : ""
+        "mb-2 p-3 bg-white rounded-md shadow-sm border border-slate-100 cursor-grab",
+        inDropZone ? "border-l-4 border-l-blue-500" : ""
       )}
-      data-topic-id={topic.id}
+      onMouseDown={handleMouseDown}
+      draggable={true}
+      onDragEnd={handleDragEnd}
     >
-      <div 
-        className="flex items-center justify-between"
-        onClick={handleToggleExpand}
-      >
-        <div className="flex items-center flex-1">
-          <span className="font-medium">{topic.name}</span>
-          {!inDropZone && topic.similarity !== undefined && (
-            <span className="ml-2 text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full">
-              {topic.similarity.toFixed(1)}
-            </span>
-          )}
-          {inDropZone && topic.children.length > 0 && (
-            <button 
-              className="ml-2 p-1 hover:bg-slate-100 rounded-full"
-              onClick={(e) => {
-                e.stopPropagation();
-                setIsExpanded(!isExpanded);
-              }}
-            >
-              {isExpanded ? (
-                <ChevronDown className="h-4 w-4 text-slate-500" />
-              ) : (
-                <ChevronRight className="h-4 w-4 text-slate-500" />
-              )}
-            </button>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center flex-grow">
+          <button 
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="mr-2 text-slate-400 hover:text-slate-600 focus:outline-none"
+          >
+            {isExpanded ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
+          </button>
+          <div className="font-medium">{topic.name}</div>
+
+          {topic.similarity !== undefined && !inDropZone && (
+            <div className="ml-2 py-0.5 px-2 bg-slate-100 rounded-full text-xs text-slate-500">
+              {Math.round(topic.similarity * 100)}%
+            </div>
           )}
         </div>
-        
-        {/* Only show market share for topics in the Core Topics box */}
-        {inDropZone && topic.dropZoneId === "coreTopics" && (
-          <div className="flex items-center">
-            <div className="flex items-center">
-              <div className="h-2 w-20 bg-slate-200 rounded-full overflow-hidden">
-                <div 
-                  className="h-full bg-indigo-500" 
-                  style={{ width: `${marketShare}%` }}
-                ></div>
-              </div>
-              <span className="text-xs ml-1.5 text-slate-700">{marketShare}%</span>
-            </div>
+
+        {inDropZone && topic.dropZoneId === 'coreTopics' && (
+          <div className="text-xs font-semibold bg-blue-100 text-blue-700 py-0.5 px-2 rounded-full">
+            {marketShare}%
           </div>
         )}
       </div>

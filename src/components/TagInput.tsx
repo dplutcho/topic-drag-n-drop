@@ -1,20 +1,29 @@
-import React, { useState, useEffect, KeyboardEvent } from 'react';
-import { Badge } from './ui/badge';
-import { X } from 'lucide-react';
-import { Input } from './ui/input';
+import React, { useState, useEffect, useCallback } from "react";
+import { X } from "lucide-react";
+import { Input } from "./ui/input";
 
 interface TagInputProps {
   initialTags?: string[];
-  onTagsChange?: (tags: string[]) => void;
+  onTagsChange: (tags: string[]) => void;
 }
 
 const TagInput: React.FC<TagInputProps> = ({ initialTags = [], onTagsChange }) => {
   const [tags, setTags] = useState<string[]>(initialTags);
-  const [inputValue, setInputValue] = useState('');
-  
-  // Update tags when initialTags prop changes
+  const [inputValue, setInputValue] = useState("");
+
+  // Use useCallback to prevent recreating this function on every render
+  const updateParentTags = useCallback((newTags: string[]) => {
+    onTagsChange(newTags);
+  }, [onTagsChange]);
+
   useEffect(() => {
-    if (initialTags && initialTags.length > 0) {
+    // Update the parent component when tags change
+    updateParentTags(tags);
+  }, [tags, updateParentTags]);
+
+  // Only update internal state when initialTags changes and is different
+  useEffect(() => {
+    if (JSON.stringify(initialTags) !== JSON.stringify(tags)) {
       setTags(initialTags);
     }
   }, [initialTags]);
@@ -29,7 +38,7 @@ const TagInput: React.FC<TagInputProps> = ({ initialTags = [], onTagsChange }) =
       if (!tags.includes(inputValue.trim())) {
         const newTags = [...tags, inputValue.trim()];
         setTags(newTags);
-        onTagsChange?.(newTags);
+        
       }
       setInputValue('');
     }
@@ -38,7 +47,7 @@ const TagInput: React.FC<TagInputProps> = ({ initialTags = [], onTagsChange }) =
   const removeTag = (tagToRemove: string) => {
     const newTags = tags.filter(tag => tag !== tagToRemove);
     setTags(newTags);
-    onTagsChange?.(newTags);
+    
   };
 
   // Badge color variations

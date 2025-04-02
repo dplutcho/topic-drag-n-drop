@@ -186,23 +186,12 @@ export const useMarketTopics = () => {
     if (source.droppableId === "searchResults") {
       const topicToMove = filteredTopics[source.index];
       
-      // Make a deep clone to ensure we don't have reference issues
       const topicClone = JSON.parse(JSON.stringify(topicToMove));
       
       if (destination.droppableId === "coreTopics") {
-        // Remove from filteredTopics (visually)
-        const newFilteredTopics = filteredTopics.filter(topic => topic.id !== topicToMove.id);
-        setFilteredTopics(newFilteredTopics);
-        
-        // Add to coreTopics
-        setCoreTopics(prevTopics => [...prevTopics, topicClone]);
+        setCoreTopics([...coreTopics, topicClone]);
       } else if (destination.droppableId === "supportiveTopics") {
-        // Remove from filteredTopics (visually)
-        const newFilteredTopics = filteredTopics.filter(topic => topic.id !== topicToMove.id);
-        setFilteredTopics(newFilteredTopics);
-        
-        // Add to supportiveTopics
-        setSupportiveTopics(prevTopics => [...prevTopics, topicClone]);
+        setSupportiveTopics([...supportiveTopics, topicClone]);
       }
     }
     else if (
@@ -213,12 +202,12 @@ export const useMarketTopics = () => {
         const newCoreTopics = Array.from(coreTopics);
         const [movedTopic] = newCoreTopics.splice(source.index, 1);
         setCoreTopics(newCoreTopics);
-        setSupportiveTopics(prevTopics => [...prevTopics, movedTopic]);
+        setSupportiveTopics([...supportiveTopics, movedTopic]);
       } else if (source.droppableId === "supportiveTopics" && destination.droppableId === "coreTopics") {
         const newSupportiveTopics = Array.from(supportiveTopics);
         const [movedTopic] = newSupportiveTopics.splice(source.index, 1);
         setSupportiveTopics(newSupportiveTopics);
-        setCoreTopics(prevTopics => [...prevTopics, movedTopic]);
+        setCoreTopics([...coreTopics, movedTopic]);
       }
     }
     else if (
@@ -229,16 +218,10 @@ export const useMarketTopics = () => {
         const newCoreTopics = Array.from(coreTopics);
         const [removedTopic] = newCoreTopics.splice(source.index, 1);
         setCoreTopics(newCoreTopics);
-        
-        // Return the topic to search results
-        setFilteredTopics(prevTopics => [...prevTopics, removedTopic]);
       } else if (source.droppableId === "supportiveTopics") {
         const newSupportiveTopics = Array.from(supportiveTopics);
         const [removedTopic] = newSupportiveTopics.splice(source.index, 1);
         setSupportiveTopics(newSupportiveTopics);
-        
-        // Return the topic to search results
-        setFilteredTopics(prevTopics => [...prevTopics, removedTopic]);
       }
     }
   };

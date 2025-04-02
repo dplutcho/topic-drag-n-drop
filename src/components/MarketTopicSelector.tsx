@@ -17,17 +17,10 @@ const MarketTopicSelector = () => {
     coreTopics,
     supportiveTopics,
     handleSearch,
-    handleDragEnd: originalHandleDragEnd,
+    handleDragEnd,
     handleChildSelectionChange,
     getCurrentAudienceState,
-    setAudienceState,
   } = useMarketTopics();
-  
-  // Wrap the original handleDragEnd to ensure it works correctly
-  const handleDragEnd = (result) => {
-    if (!result.destination) return;
-    originalHandleDragEnd(result);
-  };
 
   const [currentTags, setCurrentTags] = useState([]); // Added state for tags
   const [homePageUrl, setHomePageUrl] = useState(""); // Added state for homepage URL
@@ -188,11 +181,8 @@ const MarketTopicSelector = () => {
       </div>
 
       <div className="mb-4">
-        <TagInput 
-          key={currentTags.length} 
-          initialTags={currentTags} 
-          onTagsChange={setCurrentTags} 
-        />
+        <TagInput initialTags={currentTags} onTagsChange={setCurrentTags} />{" "}
+        {/* Update tags state with initialTags */}
       </div>
 
       <DragDropContext onDragEnd={handleDragEnd}>

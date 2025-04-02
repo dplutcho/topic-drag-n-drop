@@ -8,7 +8,11 @@ import NotFound from "./pages/NotFound";
 import "./App.css";
 
 const Dashboard = () => {
-  return <MarketTopicSelector />;
+  return (
+    <DragDropContext onDragEnd={() => {}}>
+      <MarketTopicSelector />
+    </DragDropContext>
+  );
 };
 
 function App() {

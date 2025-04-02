@@ -161,16 +161,13 @@ export const useMarketTopics = () => {
   const handleDragEnd = (result: DropResult) => {
     const { source, destination } = result;
     
-    // If there's no destination (dropped outside a droppable area), do nothing
     if (!destination) return;
     
-    // If dropped in the same position, do nothing
     if (
       source.droppableId === destination.droppableId &&
       source.index === destination.index
     ) return;
 
-    // Reordering within the same list
     if (source.droppableId === destination.droppableId) {
       if (source.droppableId === "coreTopics") {
         const newCoreTopics = Array.from(coreTopics);
@@ -186,82 +183,45 @@ export const useMarketTopics = () => {
       return;
     }
     
-    // Moving from search results to a drop zone
     if (source.droppableId === "searchResults") {
-      // Get the topic being moved from filtered topics
-      const topicToMove = {...filteredTopics[source.index]};
-      if (!topicToMove) return; // Safeguard against undefined topics
+      const topicToMove = filteredTopics[source.index];
       
-      // Create a deep clone to avoid reference issues
       const topicClone = JSON.parse(JSON.stringify(topicToMove));
-      // Add a unique ID to ensure React can properly track this element
-      topicClone.uniqueId = `${topicClone.id}-${Date.now()}`;
       
-      // Add to appropriate destination
       if (destination.droppableId === "coreTopics") {
-        setCoreTopics(prevTopics => [...prevTopics, topicClone]);
+        setCoreTopics([...coreTopics, topicClone]);
       } else if (destination.droppableId === "supportiveTopics") {
-        setSupportiveTopics(prevTopics => [...prevTopics, topicClone]);
+        setSupportiveTopics([...supportiveTopics, topicClone]);
       }
-      
-      // Update filtered topics to remove the moved topic
-      setFilteredTopics(prevFilteredTopics => 
-        prevFilteredTopics.filter(topic => topic.id !== topicToMove.id)
-      );
-      return;
     }
-    
-    // Moving between core and supportive topics
-    if (
+    else if (
       (source.droppableId === "coreTopics" && destination.droppableId === "supportiveTopics") ||
       (source.droppableId === "supportiveTopics" && destination.droppableId === "coreTopics")
     ) {
       if (source.droppableId === "coreTopics" && destination.droppableId === "supportiveTopics") {
         const newCoreTopics = Array.from(coreTopics);
         const [movedTopic] = newCoreTopics.splice(source.index, 1);
-        if (!movedTopic) return; // Safeguard against undefined topics
-        
         setCoreTopics(newCoreTopics);
-        setSupportiveTopics(prevTopics => [...prevTopics, movedTopic]);
+        setSupportiveTopics([...supportiveTopics, movedTopic]);
       } else if (source.droppableId === "supportiveTopics" && destination.droppableId === "coreTopics") {
         const newSupportiveTopics = Array.from(supportiveTopics);
         const [movedTopic] = newSupportiveTopics.splice(source.index, 1);
-        if (!movedTopic) return; // Safeguard against undefined topics
-        
         setSupportiveTopics(newSupportiveTopics);
-        setCoreTopics(prevTopics => [...prevTopics, movedTopic]);
+        setCoreTopics([...coreTopics, movedTopic]);
       }
-      return;
     }
-    
-    // Removing topics by dragging back to search results
-    if (
+    else if (
       (source.droppableId === "coreTopics" || source.droppableId === "supportiveTopics") && 
       destination.droppableId === "searchResults"
     ) {
-      // Get the topic to be moved back to search results
-      const sourceTopics = source.droppableId === "coreTopics" ? coreTopics : supportiveTopics;
-      const topicToMove = sourceTopics[source.index];
-      
-      if (!topicToMove) return;
-      
-      // Remove from source list
       if (source.droppableId === "coreTopics") {
-        setCoreTopics(prevTopics => prevTopics.filter((_, index) => index !== source.index));
+        const newCoreTopics = Array.from(coreTopics);
+        const [removedTopic] = newCoreTopics.splice(source.index, 1);
+        setCoreTopics(newCoreTopics);
       } else if (source.droppableId === "supportiveTopics") {
-        setSupportiveTopics(prevTopics => prevTopics.filter((_, index) => index !== source.index));
-      }
-      
-      // Add back to filtered topics
-      const baseTopicData = allTopics.find(t => t.id === topicToMove.id);
-      if (baseTopicData) {
-        setFilteredTopics(prevFilteredTopics => {
-          // Check if it's already in the filtered topics
-          if (!prevFilteredTopics.some(t => t.id === topicToMove.id)) {
-            return [...prevFilteredTopics, {...baseTopicData, similarity: 0.8}];
-          }
-          return prevFilteredTopics;
-        });
+        const newSupportiveTopics = Array.from(supportiveTopics);
+        const [removedTopic] = newSupportiveTopics.splice(source.index, 1);
+        setSupportiveTopics(newSupportiveTopics);
       }
     }
   };

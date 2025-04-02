@@ -23,8 +23,9 @@ const MarketTopicSelector = () => {
   } = useMarketTopics();
 
   const [currentTags, setCurrentTags] = useState([]); // Added state for tags
+  const [homePageUrl, setHomePageUrl] = useState(""); // Added state for homepage URL
 
-  // Pre-fill segment name and tags when editing
+  // Pre-fill segment name, tags, and homepage URL when editing
   useEffect(() => {
     // Extract audience ID from URL parameters
     const params = new URLSearchParams(window.location.search);
@@ -51,6 +52,11 @@ const MarketTopicSelector = () => {
           // Pre-fill the tags if they exist
           if (audience.tags && Array.isArray(audience.tags)) {
             setCurrentTags(audience.tags);
+          }
+
+          // Pre-fill the homepage URL if it exists
+          if (audience.homePageUrl) {
+            setHomePageUrl(audience.homePageUrl);
           }
         }
       }
@@ -109,6 +115,7 @@ const MarketTopicSelector = () => {
                       }),
                       data: getCurrentAudienceState(),
                       tags: currentTags, // Include tags in updated audience
+                      homePageUrl: homePageUrl, // Include homepage URL
                     };
                   }
                   return audience;
@@ -132,6 +139,7 @@ const MarketTopicSelector = () => {
                   }),
                   data: getCurrentAudienceState(),
                   tags: currentTags, // Include tags in new audience
+                  homePageUrl: homePageUrl, // Include homepage URL
                 };
 
                 // Add new audience and save to localStorage
@@ -162,6 +170,8 @@ const MarketTopicSelector = () => {
           type="url"
           placeholder="Enter your home page URL"
           className="h-12 mb-4"
+          value={homePageUrl}
+          onChange={(e) => setHomePageUrl(e.target.value)}
         />
       </div>
 

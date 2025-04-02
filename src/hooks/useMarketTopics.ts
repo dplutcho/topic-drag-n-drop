@@ -265,15 +265,23 @@ export const useMarketTopics = () => {
   const getCurrentAudienceState = () => {
     return {
       coreTopics: coreTopics.map(topic => ({
-        ...topic,
+        id: topic.id,
+        name: topic.name,
+        similarity: topic.similarity,
         children: topic.children.map(child => ({
-          ...child
+          id: child.id,
+          name: child.name,
+          selected: child.selected || false
         }))
       })),
       supportiveTopics: supportiveTopics.map(topic => ({
-        ...topic,
+        id: topic.id,
+        name: topic.name,
+        similarity: topic.similarity, 
         children: topic.children.map(child => ({
-          ...child
+          id: child.id,
+          name: child.name,
+          selected: child.selected || false
         }))
       }))
     };

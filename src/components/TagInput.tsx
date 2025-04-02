@@ -1,4 +1,4 @@
-import React, { useState, KeyboardEvent } from 'react';
+import React, { useState, useEffect, KeyboardEvent } from 'react';
 import { Badge } from './ui/badge';
 import { X } from 'lucide-react';
 import { Input } from './ui/input';
@@ -11,6 +11,13 @@ interface TagInputProps {
 const TagInput: React.FC<TagInputProps> = ({ initialTags = [], onTagsChange }) => {
   const [tags, setTags] = useState<string[]>(initialTags);
   const [inputValue, setInputValue] = useState('');
+  
+  // Update tags when initialTags prop changes
+  useEffect(() => {
+    if (initialTags && initialTags.length > 0) {
+      setTags(initialTags);
+    }
+  }, [initialTags]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);

@@ -45,7 +45,7 @@ const MarketTopicSelector = () => {
           }
 
           // Pre-fill the tags if they exist
-          if (audience.tags) {
+          if (audience.tags && Array.isArray(audience.tags)) {
             setCurrentTags(audience.tags);
           }
         }
@@ -130,7 +130,7 @@ const MarketTopicSelector = () => {
       </div>
 
       <div className="mb-4">
-        <TagInput onTagsChange={setCurrentTags} /> {/* Update tags state */}
+        <TagInput initialTags={currentTags} onTagsChange={setCurrentTags} /> {/* Update tags state with initialTags */}
       </div>
 
       <DragDropContext onDragEnd={handleDragEnd}>

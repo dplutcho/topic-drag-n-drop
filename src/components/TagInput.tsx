@@ -1,6 +1,6 @@
-import React, { useState, useEffect, KeyboardEvent } from 'react';
+import React, { useState, useEffect, useRef } from "react";
+import { X } from "lucide-react";
 import { Badge } from './ui/badge';
-import { X } from 'lucide-react';
 import { Input } from './ui/input';
 
 interface TagInputProps {
@@ -10,35 +10,39 @@ interface TagInputProps {
 
 const TagInput: React.FC<TagInputProps> = ({ initialTags = [], onTagsChange }) => {
   const [tags, setTags] = useState<string[]>(initialTags);
-  const [inputValue, setInputValue] = useState('');
-  
-  // Update tags when initialTags prop changes
+  const [input, setInput] = useState<string>("");
+  const initialRender = useRef(true);
+
   useEffect(() => {
-    if (initialTags && initialTags.length > 0) {
-      setTags(initialTags);
+    // Skip the first render to prevent infinite loop
+    if (initialRender.current) {
+      initialRender.current = false;
+      return;
     }
-  }, [initialTags]);
+
+    if (onTagsChange) {
+      onTagsChange(tags);
+    }
+  }, [tags, onTagsChange]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
+    setInput(e.target.value);
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && inputValue.trim()) {
+    if (e.key === 'Enter' && input.trim()) {
       e.preventDefault();
-      if (!tags.includes(inputValue.trim())) {
-        const newTags = [...tags, inputValue.trim()];
+      if (!tags.includes(input.trim())) {
+        const newTags = [...tags, input.trim()];
         setTags(newTags);
-        onTagsChange?.(newTags);
       }
-      setInputValue('');
+      setInput('');
     }
   };
 
   const removeTag = (tagToRemove: string) => {
     const newTags = tags.filter(tag => tag !== tagToRemove);
     setTags(newTags);
-    onTagsChange?.(newTags);
   };
 
   // Badge color variations
@@ -73,7 +77,7 @@ const TagInput: React.FC<TagInputProps> = ({ initialTags = [], onTagsChange }) =
       ))}
       <Input
         type="text"
-        value={inputValue}
+        value={input}
         onChange={handleInputChange}
         onKeyDown={handleKeyDown}
         placeholder="Add tag..."

@@ -43,6 +43,7 @@ const TopicItem = ({
         inDropZone ? "hover:bg-slate-50 transition-colors" : "",
         isDraggable ? "cursor-grab active:cursor-grabbing" : ""
       )}
+      data-topic-id={topic.id}
     >
       <div 
         className="flex items-center justify-between"

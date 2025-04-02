@@ -168,6 +168,7 @@ export const useMarketTopics = () => {
       source.index === destination.index
     ) return;
 
+    // Reordering within the same list
     if (source.droppableId === destination.droppableId) {
       if (source.droppableId === "coreTopics") {
         const newCoreTopics = Array.from(coreTopics);
@@ -183,45 +184,55 @@ export const useMarketTopics = () => {
       return;
     }
     
+    // Moving from search results to a drop zone
     if (source.droppableId === "searchResults") {
       const topicToMove = filteredTopics[source.index];
+      if (!topicToMove) return; // Safeguard against undefined topics
       
       const topicClone = JSON.parse(JSON.stringify(topicToMove));
+      // Add a unique ID to ensure React can properly track this element
+      topicClone.uniqueId = `${topicClone.id}-${Date.now()}`;
       
       if (destination.droppableId === "coreTopics") {
-        setCoreTopics([...coreTopics, topicClone]);
+        setCoreTopics(prevTopics => [...prevTopics, topicClone]);
       } else if (destination.droppableId === "supportiveTopics") {
-        setSupportiveTopics([...supportiveTopics, topicClone]);
+        setSupportiveTopics(prevTopics => [...prevTopics, topicClone]);
       }
+      return;
     }
-    else if (
+    
+    // Moving between core and supportive topics
+    if (
       (source.droppableId === "coreTopics" && destination.droppableId === "supportiveTopics") ||
       (source.droppableId === "supportiveTopics" && destination.droppableId === "coreTopics")
     ) {
       if (source.droppableId === "coreTopics" && destination.droppableId === "supportiveTopics") {
         const newCoreTopics = Array.from(coreTopics);
         const [movedTopic] = newCoreTopics.splice(source.index, 1);
+        if (!movedTopic) return; // Safeguard against undefined topics
+        
         setCoreTopics(newCoreTopics);
-        setSupportiveTopics([...supportiveTopics, movedTopic]);
+        setSupportiveTopics(prevTopics => [...prevTopics, movedTopic]);
       } else if (source.droppableId === "supportiveTopics" && destination.droppableId === "coreTopics") {
         const newSupportiveTopics = Array.from(supportiveTopics);
         const [movedTopic] = newSupportiveTopics.splice(source.index, 1);
+        if (!movedTopic) return; // Safeguard against undefined topics
+        
         setSupportiveTopics(newSupportiveTopics);
-        setCoreTopics([...coreTopics, movedTopic]);
+        setCoreTopics(prevTopics => [...prevTopics, movedTopic]);
       }
+      return;
     }
-    else if (
+    
+    // Removing topics by dragging back to search results
+    if (
       (source.droppableId === "coreTopics" || source.droppableId === "supportiveTopics") && 
       destination.droppableId === "searchResults"
     ) {
       if (source.droppableId === "coreTopics") {
-        const newCoreTopics = Array.from(coreTopics);
-        const [removedTopic] = newCoreTopics.splice(source.index, 1);
-        setCoreTopics(newCoreTopics);
+        setCoreTopics(prevTopics => prevTopics.filter((_, index) => index !== source.index));
       } else if (source.droppableId === "supportiveTopics") {
-        const newSupportiveTopics = Array.from(supportiveTopics);
-        const [removedTopic] = newSupportiveTopics.splice(source.index, 1);
-        setSupportiveTopics(newSupportiveTopics);
+        setSupportiveTopics(prevTopics => prevTopics.filter((_, index) => index !== source.index));
       }
     }
   };

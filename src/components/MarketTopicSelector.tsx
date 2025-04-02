@@ -17,11 +17,17 @@ const MarketTopicSelector = () => {
     coreTopics,
     supportiveTopics,
     handleSearch,
-    handleDragEnd,
+    handleDragEnd: originalHandleDragEnd,
     handleChildSelectionChange,
     getCurrentAudienceState,
     setAudienceState,
   } = useMarketTopics();
+  
+  // Wrap the original handleDragEnd to ensure it works correctly
+  const handleDragEnd = (result) => {
+    if (!result.destination) return;
+    originalHandleDragEnd(result);
+  };
 
   const [currentTags, setCurrentTags] = useState([]); // Added state for tags
   const [homePageUrl, setHomePageUrl] = useState(""); // Added state for homepage URL

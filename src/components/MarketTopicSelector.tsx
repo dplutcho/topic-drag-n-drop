@@ -210,6 +210,20 @@ const MarketTopicSelector = () => {
                 handleChildSelectionChange(topicId, childId, selected, false)
               }
             />
+            <div className="mt-4 flex items-center gap-2 p-3 bg-white rounded-md shadow-sm border border-gray-200">
+              <div className="flex-grow">
+                <Input 
+                  placeholder="ClientTax segment name"
+                  className="h-10"
+                />
+              </div>
+              <Button 
+                size="sm"
+                className="bg-green-600 hover:bg-green-700 text-white"
+              >
+                Push
+              </Button>
+            </div>
           </div>
         </div>
       </DragDropContext>

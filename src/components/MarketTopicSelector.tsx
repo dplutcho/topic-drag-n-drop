@@ -145,10 +145,6 @@ const MarketTopicSelector = () => {
       <DragDropContext onDragEnd={handleDragEnd}>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-1">
-            <SearchResults topics={filteredTopics} />
-          </div>
-
-          <div className="lg:col-span-1">
             <DropZone 
               id="coreTopics" 
               title="Core Audience" 
@@ -159,6 +155,10 @@ const MarketTopicSelector = () => {
                 handleChildSelectionChange(topicId, childId, selected, true)
               }
             />
+          </div>
+
+          <div className="lg:col-span-1">
+            <SearchResults topics={filteredTopics} />
           </div>
 
           <div className="lg:col-span-1">

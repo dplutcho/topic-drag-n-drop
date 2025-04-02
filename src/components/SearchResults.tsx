@@ -17,7 +17,7 @@ const SearchResults = ({ topics }: SearchResultsProps) => {
           className="bg-slate-50 rounded-lg p-4 h-[calc(100vh-250px)] overflow-y-auto"
         >
           <h2 className="text-lg font-semibold mb-3">
-            Search Results
+            Broaden your Audience
             <span className="text-xs font-normal text-gray-500 ml-2">(sorted by relevance)</span>
           </h2>
           {topics.length === 0 ? (

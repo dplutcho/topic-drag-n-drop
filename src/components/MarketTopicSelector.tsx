@@ -166,7 +166,7 @@ const MarketTopicSelector = () => {
 
       <div className="mb-4 border rounded-lg p-4 bg-gray-50">
         <div className="mb-3">
-          <h3 className="text-md font-semibold">Audience Metadata</h3>
+          <h2 className="text-md font-semibold">Define your market</h2>
         </div>
         <div className="space-y-4">
           <div>
@@ -183,7 +183,7 @@ const MarketTopicSelector = () => {
             <TagInput initialTags={currentTags} onTagsChange={setCurrentTags} />
           </div>
           <div className="flex justify-end">
-            <Button 
+            <Button
               className="bg-blue-600 hover:bg-blue-700 text-white"
               size="sm"
             >
@@ -219,12 +219,12 @@ const MarketTopicSelector = () => {
               </div>
               <div className="flex items-center gap-2 p-3 bg-white rounded-md shadow-sm border border-gray-200">
                 <div className="flex-grow">
-                  <Input 
+                  <Input
                     placeholder="ClientTax segment name"
                     className="h-10"
                   />
                 </div>
-                <Button 
+                <Button
                   size="sm"
                   className="bg-green-600 hover:bg-green-700 text-white"
                 >
@@ -232,7 +232,7 @@ const MarketTopicSelector = () => {
                 </Button>
               </div>
             </div>
-            
+
             <div className="rounded-lg border p-4 bg-indigo-50 border-indigo-100">
               <div className="mb-3 flex justify-between items-center">
                 <h3 className="text-lg font-semibold">Request Missing Topic</h3>
@@ -240,7 +240,7 @@ const MarketTopicSelector = () => {
               <div className="space-y-3">
                 <div className="flex items-center gap-2 p-3 bg-white rounded-md shadow-sm border border-gray-200">
                   <div className="flex-grow">
-                    <Input 
+                    <Input
                       placeholder="Enter missing topic name"
                       className="h-10"
                       required
@@ -248,14 +248,14 @@ const MarketTopicSelector = () => {
                   </div>
                 </div>
                 <div className="p-3 bg-white rounded-md shadow-sm border border-gray-200">
-                  <textarea 
+                  <textarea
                     placeholder="Describe this topic (required)"
                     className="w-full min-h-20 p-2 text-sm border rounded border-input resize-none focus:outline-none focus:ring-2 focus:ring-indigo-400"
                     required
                   ></textarea>
                 </div>
                 <div className="flex justify-end">
-                  <Button 
+                  <Button
                     size="sm"
                     className="bg-indigo-600 hover:bg-indigo-700 text-white"
                   >

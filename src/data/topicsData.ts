@@ -33,7 +33,7 @@ export const topicsData: Topic[] = [
   },
   {
     id: "t1",
-    name: "E-commerce",
+    name: "Banking-as-a-Service (BaaS)",
     children: [
       { id: "t1c1", name: "Online Shopping", selected: true },
       { id: "t1c2", name: "Digital Payments", selected: true },

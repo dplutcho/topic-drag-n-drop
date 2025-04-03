@@ -142,16 +142,6 @@ export const topicsData: Topic[] = [
     similarity: 0.55
   },
   {
-    id: "t14",
-    name: "Artificial Intelligence & Machine Learning",
-    children: [
-      { id: "t14c1", name: "Fraud Detection", selected: true },
-      { id: "t14c2", name: "Underwriting", selected: true },
-      { id: "t14c3", name: "Predictive Analytics", selected: true },
-    ],
-    similarity: 0.5
-  },
-  {
     id: "t15",
     name: "Blockchain & DLT",
     children: [
@@ -160,16 +150,6 @@ export const topicsData: Topic[] = [
       { id: "t15c3", name: "Tokenization", selected: true },
     ],
     similarity: 0.45
-  },
-  {
-    id: "t16",
-    name: "Cybersecurity",
-    children: [
-      { id: "t16c1", name: "Financial Data Protection", selected: true },
-      { id: "t16c2", name: "Fraud Prevention", selected: true },
-      { id: "t16c3", name: "Secure Transactions", selected: true },
-    ],
-    similarity: 0.4
   },
   {
     id: "t17",
@@ -210,5 +190,25 @@ export const topicsData: Topic[] = [
       { id: "t20c3", name: "Yield Farming", selected: true },
     ],
     similarity: 0.2
+  },
+  {
+    id: "t14",
+    name: "Artificial Intelligence & Machine Learning",
+    children: [
+      { id: "t14c1", name: "Fraud Detection", selected: true },
+      { id: "t14c2", name: "Underwriting", selected: true },
+      { id: "t14c3", name: "Predictive Analytics", selected: true },
+    ],
+    similarity: 0.15
+  },
+  {
+    id: "t16",
+    name: "Cybersecurity",
+    children: [
+      { id: "t16c1", name: "Financial Data Protection", selected: true },
+      { id: "t16c2", name: "Fraud Prevention", selected: true },
+      { id: "t16c3", name: "Secure Transactions", selected: true },
+    ],
+    similarity: 0.1
   }
 ];

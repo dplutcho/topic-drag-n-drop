@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { ChevronRight, ChevronDown } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -20,9 +19,13 @@ const TopicItem = ({
   onChildSelectionChange 
 }: TopicItemProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  
+
   // Get the normalized market share percentage
   const marketShare = getMarketShare(topic.id);
+
+  // Determine if the topic needs a red background
+  const needsRedBackground = topic.name === 'APIs and microservices' || topic.name.localeCompare('APIs and microservices') > 0;
+
 
   const handleToggleExpand = () => {
     if (inDropZone) {
@@ -40,7 +43,7 @@ const TopicItem = ({
     <div 
       className={cn(
         "bg-white rounded-lg shadow-sm p-3 mb-2 border border-slate-200",
-        inDropZone ? "hover:bg-slate-50 transition-colors" : "",
+        inDropZone ? (needsRedBackground ? 'bg-red-50 border-red-100' : 'hover:bg-slate-50 transition-colors') : "",
         isDraggable ? "cursor-grab active:cursor-grabbing" : ""
       )}
     >
@@ -71,7 +74,7 @@ const TopicItem = ({
             </button>
           )}
         </div>
-        
+
         {/* Only show market share for topics in the Core Topics box */}
         {inDropZone && topic.dropZoneId === "coreTopics" && (
           <div className="flex items-center">

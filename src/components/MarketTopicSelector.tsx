@@ -255,6 +255,9 @@ const MarketTopicSelector = () => {
           </div>
 
           <div className="lg:col-span-1">
+            <div className="mb-3 p-2 bg-yellow-50 border border-yellow-200 rounded-lg text-sm">
+              <strong>Topic Relevancy:</strong> Topics marked in red (from "APIs and microservices" onwards) have lower relevance to core fintech activities.
+            </div>
             <SearchResults topics={filteredTopics} />
           </div>
 

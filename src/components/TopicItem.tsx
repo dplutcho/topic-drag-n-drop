@@ -23,8 +23,16 @@ const TopicItem = ({
   // Get the normalized market share percentage
   const marketShare = getMarketShare(topic.id);
 
-  // Determine if the topic needs a red background
-  const needsRedBackground = topic.name === 'APIs and microservices' || topic.name.localeCompare('APIs and microservices') > 0;
+  // Determine if the topic is beyond the relevance threshold
+  const isLowRelevanceTopic = topic.name === 'APIs and microservices' || topic.name.localeCompare('APIs and microservices') >= 0;
+  
+  // Get topic visual status - for styling
+  const getTopicStatus = () => {
+    if (!isLowRelevanceTopic) return 'relevant';
+    return 'low-relevance';
+  };
+
+  const topicStatus = getTopicStatus();
 
 
   const handleToggleExpand = () => {
@@ -42,8 +50,15 @@ const TopicItem = ({
   return (
     <div 
       className={cn(
-        "bg-white rounded-lg shadow-sm p-3 mb-2 border border-slate-200",
-        inDropZone ? (needsRedBackground ? 'bg-red-50 border-red-100' : 'hover:bg-slate-50 transition-colors') : "",
+        "rounded-lg shadow-sm p-3 mb-2 border",
+        topicStatus === 'low-relevance' 
+          ? "bg-red-50 border-red-200" 
+          : "bg-white border-slate-200",
+        inDropZone 
+          ? (topicStatus === 'low-relevance' 
+              ? 'bg-red-50 border-red-200' 
+              : 'hover:bg-slate-50 transition-colors') 
+          : "",
         isDraggable ? "cursor-grab active:cursor-grabbing" : ""
       )}
     >
@@ -52,9 +67,26 @@ const TopicItem = ({
         onClick={handleToggleExpand}
       >
         <div className="flex items-center flex-1">
-          <span className="font-medium">{topic.name}</span>
+          <span className={cn(
+            "font-medium", 
+            topicStatus === 'low-relevance' ? "text-red-700" : ""
+          )}>
+            {topic.name}
+          </span>
+          
+          {topicStatus === 'low-relevance' && (
+            <span className="ml-2 text-xs bg-red-100 text-red-800 px-2 py-0.5 rounded-full">
+              Low Relevance
+            </span>
+          )}
+          
           {!inDropZone && topic.similarity !== undefined && (
-            <span className="ml-2 text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full">
+            <span className={cn(
+              "ml-2 text-xs px-2 py-0.5 rounded-full",
+              topicStatus === 'low-relevance' 
+                ? "bg-red-100 text-red-800" 
+                : "bg-blue-100 text-blue-800"
+            )}>
               {topic.similarity.toFixed(1)}
             </span>
           )}

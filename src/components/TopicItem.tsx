@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { ChevronRight, ChevronDown } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -20,7 +19,7 @@ const TopicItem = ({
   onChildSelectionChange 
 }: TopicItemProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  
+
   // Get the normalized market share percentage
   const marketShare = getMarketShare(topic.id);
 
@@ -35,6 +34,15 @@ const TopicItem = ({
       onChildSelectionChange(topic.id, childId, checked);
     }
   };
+
+  // Special rendering for divider item
+  if (topic.divider) {
+    return (
+      <div className={topic.className || "py-2 my-2 border-t-4 border-red-600 text-center text-red-600 font-bold"}>
+        {topic.name}
+      </div>
+    );
+  }
 
   return (
     <div 
@@ -71,7 +79,7 @@ const TopicItem = ({
             </button>
           )}
         </div>
-        
+
         {/* Only show market share for topics in the Core Topics box */}
         {inDropZone && topic.dropZoneId === "coreTopics" && (
           <div className="flex items-center">

@@ -265,6 +265,14 @@ export const topicsData: Topic[] = [
     similarity: 0.28
   },
   {
+    id: "divider",
+    name: "───────── DO NOT USE TOPICS BELOW THIS LINE ─────────",
+    children: [],
+    similarity: 0,
+    divider: true,
+    className: "py-2 my-2 border-t-4 border-red-600 text-center text-red-600 font-bold"
+  },
+  {
     id: "t26",
     name: "Licensing & cross-border compliance",
     children: [

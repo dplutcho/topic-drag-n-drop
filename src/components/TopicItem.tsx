@@ -44,10 +44,28 @@ const TopicItem = ({
     );
   }
 
+  // Calculate background color based on similarity score
+  const getBackgroundColor = () => {
+    if (inDropZone || topic.similarity === undefined) return "bg-white";
+    
+    // Convert similarity (0.0-1.0) to color
+    if (topic.similarity >= 0.7) {
+      // Green gradient for high similarity (0.7-1.0)
+      return "bg-gradient-to-r from-green-50 to-green-100 border-l-4 border-green-500";
+    } else if (topic.similarity >= 0.4) {
+      // Yellow gradient for medium similarity (0.4-0.69)
+      return "bg-gradient-to-r from-yellow-50 to-yellow-100 border-l-4 border-yellow-500";
+    } else {
+      // Red gradient for low similarity (0.0-0.39)
+      return "bg-gradient-to-r from-red-50 to-red-100 border-l-4 border-red-500";
+    }
+  };
+
   return (
     <div 
       className={cn(
-        "bg-white rounded-lg shadow-sm p-3 mb-2 border border-slate-200",
+        getBackgroundColor(),
+        "rounded-lg shadow-sm p-3 mb-2 border border-slate-200",
         inDropZone ? "hover:bg-slate-50 transition-colors" : "",
         isDraggable ? "cursor-grab active:cursor-grabbing" : ""
       )}
@@ -59,7 +77,13 @@ const TopicItem = ({
         <div className="flex items-center flex-1">
           <span className="font-medium">{topic.name}</span>
           {!inDropZone && topic.similarity !== undefined && (
-            <span className="ml-2 text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full">
+            <span className={`ml-2 text-xs px-2 py-0.5 rounded-full ${
+              topic.similarity >= 0.7 
+                ? "bg-green-100 text-green-800" 
+                : topic.similarity >= 0.4 
+                  ? "bg-yellow-100 text-yellow-800"
+                  : "bg-red-100 text-red-800"
+            }`}>
               {topic.similarity.toFixed(1)}
             </span>
           )}

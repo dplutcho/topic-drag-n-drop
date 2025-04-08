@@ -266,11 +266,11 @@ export const topicsData: Topic[] = [
   },
   {
     id: "divider",
-    name: "───────── DO NOT USE TOPICS BELOW THIS LINE ─────────",
+    name: "",
     children: [],
     similarity: 0,
     divider: true,
-    className: "py-2 my-2 border-t-4 border-red-600 text-center text-red-600 font-bold"
+    className: "py-2 my-2 border-t-4 border-red-600"
   },
   {
     id: "t26",

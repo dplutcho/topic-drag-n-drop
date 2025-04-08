@@ -41,7 +41,34 @@ const MarketTopicSelector = () => {
       const remainingTopics = topicsData.filter(topic => 
         !firstFiveTopics.some(coreTopic => coreTopic.id === topic.id)
       );
-      setFilteredTopics(remainingTopics);
+      
+      // Reposition the divider line after the last yellow topic (similarity >= 0.4)
+      const dividerTopic = remainingTopics.find(topic => topic.id === "divider");
+      if (dividerTopic) {
+        // Remove the divider from its current position
+        const topicsWithoutDivider = remainingTopics.filter(topic => topic.id !== "divider");
+        
+        // Find the index position after the last yellow topic (similarity between 0.4-0.69)
+        let insertPosition = 0;
+        for (let i = 0; i < topicsWithoutDivider.length; i++) {
+          if (topicsWithoutDivider[i].similarity !== undefined && 
+              topicsWithoutDivider[i].similarity >= 0.4 && 
+              topicsWithoutDivider[i].similarity < 0.7) {
+            insertPosition = i + 1;
+          }
+        }
+        
+        // Insert the divider at the correct position
+        const reorderedTopics = [
+          ...topicsWithoutDivider.slice(0, insertPosition),
+          dividerTopic,
+          ...topicsWithoutDivider.slice(insertPosition)
+        ];
+        
+        setFilteredTopics(reorderedTopics);
+      } else {
+        setFilteredTopics(remainingTopics);
+      }
     }
   }, [setFilteredTopics, setCoreTopics]);
 

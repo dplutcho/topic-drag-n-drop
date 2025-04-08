@@ -26,24 +26,12 @@ const MarketTopicSelector = () => {
     setFilteredTopics,
   } = useMarketTopics();
 
-  // Initialize with first five topics in core audience
+  // Initialize with empty filtered topics
   useEffect(() => {
-    if (setFilteredTopics && setCoreTopics) {
-      // Get the first five topics from topicsData
-      const firstFiveTopics = topicsData.slice(0, 5).map(topic => 
-        JSON.parse(JSON.stringify(topic))
-      );
-      
-      // Set the first five topics to core audience
-      setCoreTopics(firstFiveTopics);
-      
-      // Filter out the first five topics from the filtered topics
-      const remainingTopics = topicsData.filter(topic => 
-        !firstFiveTopics.some(coreTopic => coreTopic.id === topic.id)
-      );
-      setFilteredTopics(remainingTopics);
+    if (setFilteredTopics) {
+      setFilteredTopics([]);
     }
-  }, [setFilteredTopics, setCoreTopics]);
+  }, [setFilteredTopics]);
 
   const [currentTags, setCurrentTags] = useState([]); // Added state for tags
   const [homePageUrl, setHomePageUrl] = useState(""); // Added state for homepage URL
